@@ -39,8 +39,8 @@ declare type SearchParamProps = {
   }
   
   declare type CreateAppointmentParams = {
-    userId: string;
-    patient: string;
+   // userId: string;
+   // patient: string;
     primaryPhysician: string;
     reason: string;
     schedule: Date;
@@ -48,8 +48,16 @@ declare type SearchParamProps = {
     note: string | undefined;
   };
   
- declare type UpdateAppointmentParams = {
+  
+  // New type for updating appointment with IDs
+declare type UpdateAppointmentWithIdsParams = {
+  appointmentId: string;
   userId: string;
+  patient: string;
+};
+
+ declare type UpdateAppointmentParams = {
+  userId: string | undefined;
   appointmentId: string;
   appointment: {
     primaryPhysician: string;

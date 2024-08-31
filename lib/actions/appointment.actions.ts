@@ -163,7 +163,7 @@ export const updateAppointment = async ({
     const smsMessage = 
        `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!,).dateTime} with Dr. ${appointment.primaryPhysician}`
       : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, ).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
-    await sendSMSNotification(userId, smsMessage );
+   // await sendSMSNotification(userId, smsMessage );
 
     revalidatePath("/admin");
     return parseStringify(updatedAppointment);
@@ -184,7 +184,7 @@ export const getAppointment = async (appointmentId: string) => {
     return parseStringify(appointment);
   } catch (error) {
     console.error(
-      "An error occurred while retrieving the existing patient:",
+      "An error occurred while retrieving the existing appointment:",
       error
     );
   }

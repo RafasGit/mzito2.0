@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { PatientForm } from "@/components/forms/PatientForm";
 import { PasskeyModal } from "@/components/PasskeyModal";
+import { AppointmentForm } from "@/components/forms/AppointmentForm";
+
 
 const Home = ({searchParams}: SearchParamProps) => {
   const isAdmin = searchParams?.admin === "true";
@@ -20,8 +22,12 @@ const Home = ({searchParams}: SearchParamProps) => {
             alt="patient"
             className="mb-12 h-10 w-fit"
           />
+         <AppointmentForm
+           type="create"
+          />
 
-          <PatientForm />
+
+          {/* <PatientForm /> */}
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">

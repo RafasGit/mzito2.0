@@ -2,15 +2,16 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import RegisterForm from "@/components/forms/RegisterForm";
-import { getPatient, getUser } from "@/lib/actions/patient.actions";
+import { getPatient, getUser, } from "@/lib/actions/patient.actions";
+import { getAppointment } from "@/lib/actions/appointment.actions";
+import { PatientForm } from "@/components/forms/PatientForm";
 
-const Register = async ({ params: { userId } }: SearchParamProps) => {
-  const user = await getUser(userId);
+const Register = async ({ searchParams, params: { userId } }: SearchParamProps) => {
+  const appointmentId = userId;
+  const appointment = await getAppointment(appointmentId);
+   console.log({appointmentId})
 
-  const patient = await getPatient(userId);
- console.log(`this ${patient}`)
-
-  if (patient) redirect(`/patients/${userId}/new-appointment`);
+  //if (patient) redirect(`/patients/${userId}/new-appointment`);
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -24,7 +25,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
             className="mb-12 h-10 w-fit"
           />
 
-          <RegisterForm user={user} />
+        <PatientForm />
 
           <p className="copyright py-12">© 2024 CarePluse</p>
         </div>

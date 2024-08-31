@@ -29,8 +29,8 @@ export const AppointmentForm = ({
   appointment,
   setOpen,
 }: {
-  userId: string;
-  patientId: string;
+  userId?: string;
+  patientId?: string;
   type: "create" | "schedule" | "cancel";
   appointment?: Appointment;
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -71,10 +71,10 @@ export const AppointmentForm = ({
     }
 
     try {
-      if (type === "create" && patientId) {
+      if (type === "create" ) {
         const appointment = {
-          userId,
-          patient: patientId,
+        //  userId,
+         // patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason!,
@@ -86,9 +86,10 @@ export const AppointmentForm = ({
 
         if (newAppointment) {
           form.reset();
-          router.push(
-            `/patients/${userId}/new-appointment/success?appointmentId=${newAppointment.$id}`
-          );
+         
+            router.push(`/patients/${newAppointment.$id}/register`);
+              // `/patients/${newAppointment.$id}/register/success?appointmentId=${newAppointment.$id}`
+         
         }
       } else {
         const appointmentToUpdate = {

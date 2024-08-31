@@ -7,9 +7,9 @@ import { getAppointment } from "@/lib/actions/appointment.actions";
 import { PatientForm } from "@/components/forms/PatientForm";
 
 const Register = async ({ searchParams, params: { userId } }: SearchParamProps) => {
-  const appointmentId = userId;
-  const appointment = await getAppointment(appointmentId);
-   console.log({appointmentId})
+  const appointmentid = userId;
+  const appointment = await getAppointment(appointmentid);
+  // console.log({appointment})
 
   //if (patient) redirect(`/patients/${userId}/new-appointment`);
 
@@ -25,9 +25,9 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
             className="mb-12 h-10 w-fit"
           />
 
-        <PatientForm />
+        <PatientForm appointment={appointment} />
 
-          <p className="copyright py-12">© 2024 CarePluse</p>
+          <p className="copyright py-12">© 2024 Mzito SuperCuts</p>
         </div>
       </section>
 

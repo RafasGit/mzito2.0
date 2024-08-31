@@ -13,9 +13,26 @@ import { UserFormValidation } from "@/lib/validation";
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
+import Appointment from "@/app/patients/[userId]/new-appointment/page";
 
 
-export const PatientForm = () => {
+interface Appointment {
+  schedule: string;
+  reason: string;
+  note: string;
+  primaryPhysician: string;
+  status: string;
+  $id: string;
+  $createdAt: string;
+  patient: string | null;
+  userId: string | null;
+  // ... other properties
+}
+
+
+export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
+  
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -37,11 +54,25 @@ export const PatientForm = () => {
       };
       console.log(user)
       const newUser = await createUser(user);
-    // console.log( `'hi' ${newUser}`)
+      console.log({newUser: newUser.$id})
+    
+    // const appointmentId = appointment.$id    // You need to implement this function
+    
+    //    console.log(`hi ${appointmentId}`)
+    // if (!appointmentId) {
+    //   throw new Error('No appointment ID found');
+    // }
+    
+    // const appointmentToUpdate = {
+    //   userId,
+     
+    // };
+    // const updatedAppointment = await a(appointmentId, newUser.id);
+    // console.log('Appointment updated:', updatedAppointment);
 
-      if (newUser) {
-        router.push(`/patients/${newUser.$id}/register`);
-      }
+    //   if (newUser) {
+    //     router.push(`/patients/${newUser.$id}/register`);
+    //   }
     } catch (error) {
       console.log(error);
     }

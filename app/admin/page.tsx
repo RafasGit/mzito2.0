@@ -10,6 +10,7 @@ import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
 const AdminPage = async () => {
   const appointments = await getRecentAppointmentList();
+  console.log(appointments)
 
 
   return (

@@ -7,13 +7,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.actions";
+import { createUser, registerPatient } from "@/lib/actions/patient.actions";
 import { UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import Appointment from "@/app/patients/[userId]/new-appointment/page";
+import { updateAppointment, updateAppointmentWithIds } from "@/lib/actions/appointment.actions";
 
 
 interface Appointment {
@@ -49,30 +50,33 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
     setIsLoading(true);
 
     try {
-      const user = {
+      const client = {
          name, email, phone        
       };
-      console.log(user)
-      const newUser = await createUser(user);
-      console.log({newUser: newUser.$id})
+      console.log(client)
+      const patient = await registerPatient(client);
+      console.log({newClient: patient.$id})
+   // const newClientId = newClient.$id
+    const appointmentId = appointment.$id    // You need to implement this function
     
-    // const appointmentId = appointment.$id    // You need to implement this function
+       console.log(`hi ${appointmentId}`)
+    if (!appointmentId) {
+      throw new Error('No appointment ID found');
+    }
     
-    //    console.log(`hi ${appointmentId}`)
-    // if (!appointmentId) {
-    //   throw new Error('No appointment ID found');
-    // }
-    
-    // const appointmentToUpdate = {
-    //   userId,
-     
-    // };
-    // const updatedAppointment = await a(appointmentId, newUser.id);
-    // console.log('Appointment updated:', updatedAppointment);
+    const appointmentToUpdate = {
+      appointmentId,
+      patient,
+    };
+    const updatedAppointment = await updateAppointmentWithIds(appointmentToUpdate);
+    console.log('Appointment updated:', updatedAppointment);
 
-    //   if (newUser) {
-    //     router.push(`/patients/${newUser.$id}/register`);
-    //   }
+    if (updatedAppointment) {
+      form.reset();
+      router.push(
+        `/patients/${appointmentId}/new-appointment/success?appointmentId=${updatedAppointment.$id}`
+      );
+    }
     } catch (error) {
       console.log(error);
     }

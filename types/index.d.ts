@@ -18,24 +18,24 @@ declare type SearchParamProps = {
   }
   
   declare interface RegisterUserParams extends CreateUserParams {
-    userId: string;
-    birthDate: Date;
-    gender: Gender;
-    address: string;
-    occupation: string;
-    emergencyContactName: string;
-    emergencyContactNumber: string;
-    primaryPhysician: string;
-    insuranceProvider: string;
-    insurancePolicyNumber: string;
-    allergies: string | undefined;
-    currentMedication: string | undefined;
-    familyMedicalHistory: string | undefined;
-    pastMedicalHistory: string | undefined;
-    identificationType: string | undefined;
-    identificationNumber: string | undefined;
-    identificationDocument: FormData | undefined;
-    privacyConsent: boolean;
+    // userId: string;
+    // birthDate: Date;
+    // gender: Gender;
+    // address: string;
+    // occupation: string;
+    // emergencyContactName: string;
+    // emergencyContactNumber: string;
+    // primaryPhysician: string;
+    // insuranceProvider: string;
+    // insurancePolicyNumber: string;
+    // allergies: string | undefined;
+    // currentMedication: string | undefined;
+    // familyMedicalHistory: string | undefined;
+    // pastMedicalHistory: string | undefined;
+    // identificationType: string | undefined;
+    // identificationNumber: string | undefined;
+    // identificationDocument: FormData | undefined;
+    // privacyConsent: boolean;
   }
   
   declare type CreateAppointmentParams = {
@@ -52,12 +52,12 @@ declare type SearchParamProps = {
   // New type for updating appointment with IDs
 declare type UpdateAppointmentWithIdsParams = {
   appointmentId: string;
-  userId: string;
+  //userId: string;
   patient: string;
 };
 
  declare type UpdateAppointmentParams = {
-  userId: string | undefined;
+  //userId: string | undefined;
   appointmentId: string;
   appointment: {
     primaryPhysician: string;

@@ -81,23 +81,11 @@ export const getPatient = async (userId: string) => {
   
  // REGISTER PATIENT
 export const registerPatient = async ({
-    identificationDocument,
+  
     ...patient
   }: RegisterUserParams) => {
     try {
-      // Upload file ->  // https://appwrite.io/docs/references/cloud/client-web/storage#createFile
-      let file;
-      if (identificationDocument) {
-        const inputFile =
-          identificationDocument &&
-          InputFile.fromBlob(
-            identificationDocument?.get("blobFile") as Blob,
-            identificationDocument?.get("fileName") as string
-          );
-  
-        file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
-      }
-  
+    
       // Create new patient document -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#createDocument
       const newPatient = await databases.createDocument(
         DATABASE_ID!,
@@ -105,9 +93,7 @@ export const registerPatient = async ({
         ID.unique(),
         
         {
-          identificationDocumentId: file?.$id ? file.$id : null,
-          identificationDocumentUrl:  `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file?.$id}/view??project=${PROJECT_ID}`
-            ,
+         
           ...patient,
         }
       );

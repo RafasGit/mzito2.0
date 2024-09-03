@@ -12,8 +12,8 @@ const API_ENDPOINT = 'https://api2.tiaraconnect.io/api/messaging/sendsms'; // Re
 
 export async function POST(req: NextRequest) {
   try {
-    const { to, from = 'CONNECT', message }: SmsRequest = await req.json();
-
+    const { to, from = 'TIARACONECT', message }: SmsRequest = await req.json();
+console.log(from)
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {

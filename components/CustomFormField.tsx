@@ -1,20 +1,38 @@
 import { E164Number } from "libphonenumber-js/core";
 import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import { Calendar } from "@/components/ui/calendar";
 import ReactDatePicker from "react-datepicker";
 import { Control } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
+import { Button } from "./ui/button";
 
-import { Checkbox } from "./ui/checkbox";
 import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetFooter,
+  SheetClose,
+} from "@/components/ui/sheet";
+import { Calendar as CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+ 
+import { Checkbox } from "./ui/checkbox";
+import { format } from "date-fns";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage,} from "./ui/form";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
+import { time } from "console";
+import { Value } from "@radix-ui/react-select";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -24,6 +42,10 @@ export enum FormFieldType {
   DATE_PICKER = "datePicker",
   SELECT = "select",
   SKELETON = "skeleton",
+}
+
+interface TimeSlot {
+  time: string;
 }
 
 interface CustomProps {
@@ -39,6 +61,10 @@ interface CustomProps {
   children?: React.ReactNode;
   renderSkeleton?: (field: any) => React.ReactNode;
   fieldType: FormFieldType;
+  timeList?: string;
+  timeSlots?: TimeSlot;
+  
+   
 }
 
 const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
@@ -104,28 +130,151 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
           </div>
         </FormControl>
       );
+
+
     case FormFieldType.DATE_PICKER:
+
+
+      interface TimeSlot {
+        time: string;
+      }
+
+
+     
+      const [timeSlot, setTimeSlot] = useState<TimeSlot[]>([]);
+      const [bookedSlot, setBookedSlot] = useState([]);
+      const [selectedTime, setSelectedTime] = useState<string>();
+
+      const handleTimeSlotSelection = (time: string) => {
+        if (!field.value) return; // Ensure a date is selected first
+      
+        // Parse the selected date into a Date object
+        const selectedDate = new Date(field.value);
+      
+        // Split the selected time into hours and minutes
+        const [timeString, period] = time.split(' ');
+        let [hours, minutes] = timeString.split(':').map(Number);
+      
+         // Convert 12-hour format to 24-hour format
+      if (period === 'PM' && hours < 12) {
+    hours += 12;
+     } else if (period === 'AM' && hours === 12) {
+    hours = 0;
+    }
+
+      // Set hours and minutes to the selectedDate object
+    selectedDate.setHours(hours, minutes);
+
+     // Update field.value with the combined date and time
+    field.onChange(selectedDate);
+   setSelectedTime(time); // Keep track of the selected time
+  }; 
+
+      useEffect(() => {
+        getTime();
+      }, []);
+
+
+      const getTime = () => {
+        const timeList: TimeSlot[] = [];
+        for (let i = 10; i <= 12; i++) {
+          timeList.push({
+            time: i + ":00 AM",
+          });
+          timeList.push({
+            time: i + ":30 AM",
+          });
+        }
+        for (let i = 1; i <= 6; i++) {
+          timeList.push({
+            time: i + ":00 PM",
+          });    
+          timeList.push({
+            time: i + ":30 PM",
+          });
+        }
+    
+        setTimeSlot(timeList);
+      };
+      
+     
+
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
-          <Image
-            src="/assets/icons/calendar.svg"
-            height={24}
-            width={24}
-            alt="user"
-            className="ml-2"
-          />
-          <FormControl>
-            <ReactDatePicker
-              showTimeSelect={props.showTimeSelect ?? false}
-              selected={field.value}
-              onChange={(date) => field.onChange(date)}
-              timeInputLabel="Time:"
-              dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
-              wrapperClassName="date-picker"
-              
-            />
-          </FormControl>
+        <div>
+          <Sheet>
+            <SheetTrigger asChild>
+              <FormControl>
+            <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+             {field.value?  (
+           <>
+         {format(field.value, "PPP h:mm aa")}
+          </>
+                     ) :(
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                    </FormControl>
+            </SheetTrigger>
+            <SheetContent className=" h-22 bg-neutral-950  overflow-auto">
+              <SheetHeader>
+                <SheetTitle>Book a Service</SheetTitle>
+                <SheetDescription>
+                  Select Date and Time slot to book an service
+                  <div className=" ml-[-12px] flex flex-col gap-5 items-baseline">
+                    <h2 className="mt-5 font-bold">Select Date</h2>
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      className="rounded-md border pl-2"
+                    />
+                  </div>
+                  <h2 className="my-5 font-bold">Select Time Slot</h2>
+                  <div className="grid grid-cols-3 gap-3">
+                    {timeSlot.map((item, index) => (
+                      <Button
+                        key={index}
+                        variant="outline"
+                       // disabled={isBooked(item.time) || prevDate >= date } 
+                        className={`border rounded-full p-2 px-3 hover:bg-primary hover:text-white ${
+                          selectedTime == item.time && "bg-white text-black"
+                        }`}
+                       
+                        onClick={() => handleTimeSlotSelection(item.time)}
+                      >
+                        {item.time}
+                      </Button>
+                    ))}
+                  </div>
+                </SheetDescription>
+              </SheetHeader>
+              <SheetFooter className="mt-5">
+                <SheetClose asChild>
+                  <div className="flex gap-2">
+                    <Button variant="destructive" className=" shad-danger-btn w-24">
+                      Cancel
+                    </Button>
+    
+                    <Button className="shad-primary-btn w-24"
+                      //disabled={(date !(selectedTime && date) || date > new Date() }
+                     
+                    >
+                      Confirm
+                    </Button>
+                  </div>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
         </div>
+      
       );
     case FormFieldType.SELECT:
       return (
@@ -171,3 +320,19 @@ const CustomFormField = (props: CustomProps) => {
 };
 
 export default CustomFormField;
+
+
+    {/* <FormControl>
+
+            
+
+            {/* <ReactDatePicker
+              showTimeSelect={props.showTimeSelect! ?? false}
+               selected={field.value}
+              onChange={(date) => field.onChange(date)}
+              timeInputLabel="Time:"
+              dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+              wrapperClassName="date-picker"
+              
+            /> */}
+            // </FormControl> */}

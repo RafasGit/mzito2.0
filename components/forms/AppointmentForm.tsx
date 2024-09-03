@@ -21,6 +21,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { Form } from "../ui/form";
+import { format } from "date-fns";
+
 
 export const AppointmentForm = ({
   userId,
@@ -37,7 +39,17 @@ export const AppointmentForm = ({
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
+  const combineAndFormatDateTime = (date: Date | undefined, time: Date | undefined): string => {
+    if (!date || !time) {
+      return '';
+    }
+  
+    // Combine date and time into a single Date object
+    const combinedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes());
+  
+    // Format the combined date-time
+    return format(combinedDate, 'MM/dd/yyyy - hh\'mm\'a');
+  };
   const AppointmentFormValidation = getAppointmentSchema(type);
 
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -85,7 +97,7 @@ export const AppointmentForm = ({
         const newAppointment = await createAppointment(appointment);
 
         if (newAppointment) {
-          form.reset();
+          //form.reset();
          
             router.push(`/patients/${newAppointment.$id}/register`);
               // `/patients/${newAppointment.$id}/register/success?appointmentId=${newAppointment.$id}`
@@ -171,7 +183,6 @@ export const AppointmentForm = ({
               control={form.control}
               name="schedule"
               label="Expected appointment date"
-              showTimeSelect
               dateFormat="MM/dd/yyyy  -  h:mm aa"
             />
 
@@ -183,7 +194,7 @@ export const AppointmentForm = ({
                 control={form.control}
                 name="reason"
                 label="Appointment reason"
-                placeholder="Annual montly check-up"
+                placeholder="Annual monthly check-up"
                 disabled={type === "schedule"}
               />
 

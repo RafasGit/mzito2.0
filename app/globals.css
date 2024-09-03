@@ -283,7 +283,7 @@
   align-items: center;
 }
 
-.react-datepicker,
+/* .react-datepicker,
 .react-datepicker__time,
 .react-datepicker__header,
 .react-datepicker__current-month,
@@ -293,7 +293,7 @@
   background-color: #1a1d21 !important;
   border-color: #363a3d !important;
   color: #abb8c4 !important;
-}
+} */
 
 .react-datepicker__current-month,
 .react-datepicker__day-name,

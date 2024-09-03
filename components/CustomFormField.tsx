@@ -207,7 +207,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
+                        "w-[33.75rem] h-[44.75px] pl-3 text-left font-normal shad-gray-btn",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -218,7 +218,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                      ) :(
                         <span>Pick a date</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto h-5 w-5 opacity-50" />
                     </Button>
                     </FormControl>
             </SheetTrigger>
@@ -243,7 +243,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                         key={index}
                         variant="outline"
                        // disabled={isBooked(item.time) || prevDate >= date } 
-                        className={`border rounded-full p-2 px-3 hover:bg-primary hover:text-white ${
+                        className={`border rounded-full p-2 px-3 hover:bg-black hover:text-white ${
                           selectedTime == item.time && "bg-white text-black"
                         }`}
                        

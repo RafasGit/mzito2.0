@@ -36,22 +36,22 @@ export const AppointmentForm = ({
   type: "create" | "schedule" | "cancel";
   appointment?: Appointment;
   setOpen?: Dispatch<SetStateAction<boolean>>;
+  setSelectedDoctor?: (doctorName: string) => void;
+
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const combineAndFormatDateTime = (date: Date | undefined, time: Date | undefined): string => {
-    if (!date || !time) {
-      return '';
-    }
-  
-    // Combine date and time into a single Date object
-    const combinedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes());
-  
-    // Format the combined date-time
-    return format(combinedDate, 'MM/dd/yyyy - hh\'mm\'a');
-  };
-  const AppointmentFormValidation = getAppointmentSchema(type);
+//   let selectedDoctor: string | null = null;
 
+// const setSelectedDoctor = (value: string | null) => {
+//   selectedDoctor = value;
+// };
+
+  
+//console.log(selectedDoctor)
+
+  const AppointmentFormValidation = getAppointmentSchema(type);
+ 
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
@@ -64,6 +64,7 @@ export const AppointmentForm = ({
       cancellationReason: appointment?.cancellationReason || "",
     },
   });
+  
 
   const onSubmit = async (
     values: z.infer<typeof AppointmentFormValidation>
@@ -82,6 +83,7 @@ export const AppointmentForm = ({
         status = "pending";
     }
 
+    
     try {
       if (type === "create" ) {
         const appointment = {
@@ -141,6 +143,8 @@ export const AppointmentForm = ({
       buttonLabel = "Submit Apppointment";
   }
 
+  const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
+  console.log(selectedDoctor)
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
@@ -155,12 +159,14 @@ export const AppointmentForm = ({
 
         {type !== "cancel" && (
           <>
+          
             <CustomFormField
               fieldType={FormFieldType.SELECT}
               control={form.control}
               name="primaryPhysician"
               label="Doctor"
               placeholder="Select a doctor"
+              
             >
               {Doctors.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
@@ -173,6 +179,7 @@ export const AppointmentForm = ({
                       className="rounded-full border border-dark-500"
                     />
                     <p>{doctor.name}</p>
+                    
                   </div>
                 </SelectItem>
               ))}
@@ -184,6 +191,7 @@ export const AppointmentForm = ({
               name="schedule"
               label="Expected appointment date"
               dateFormat="MM/dd/yyyy  -  h:mm aa"
+              
             />
 
             <div
@@ -194,7 +202,7 @@ export const AppointmentForm = ({
               control={form.control}
               name="reason"
               label="Appointment reason"
-              placeholder="Choose service"
+              placeholder={selectedDoctor}
             >
               {Doctors.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
@@ -219,7 +227,7 @@ export const AppointmentForm = ({
                 control={form.control}
                 name="note"
                 label="Comments/notes"
-                placeholder="Prefer afternoon appointments, if possible"
+                placeholder={selectedDoctor}
                 disabled={type === "schedule"}
               />
             </div>

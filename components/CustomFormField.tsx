@@ -267,8 +267,9 @@ useEffect(() => {
      
 
    
-      const [timeSlot, setTimeSlot] = useState<TimeSlot[]>([]);
-      const [bookedSlot, setBookedSlot] = useState([]);
+const [timeSlot, setTimeSlot] = useState<TimeSlot[]>([]);
+const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming bookedSlot is your booked appointments
+
       const [selectedTime, setSelectedTime] = useState<string>();
 
 
@@ -319,11 +320,22 @@ useEffect(() => {
           return appointmentDate.toDateString() === adjustedDate.toDateString();
         });
       
-        console.log(`Appointments on ${selectedDate.toDateString()}:`, filteredAppointments);
+        console.log(`Appointments on ${adjustedDate.toDateString()}:`, filteredAppointments);
         
-        return filteredAppointments;
+  // Map the filteredAppointments to TimeSlot[] format
+    const bookedSlots = filteredAppointments.map((appointment) => ({
+     time: new Date(appointment.schedule).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    }), // Convert appointment.schedule to the correct time format
+   }));
+
+  setBookedSlot(bookedSlots); // Set the correct format in setBookedSlot
+
+  return bookedSlots;
       }
       };
+     
 
       const handleTimeSlotSelection = (time: string) => {
         if (!field.value) return; // Ensure a date is selected first
@@ -349,35 +361,60 @@ useEffect(() => {
     field.onChange(selectedDate);
    setSelectedTime(time); // Keep track of the selected time
   }; 
-
-      useEffect(() => {
-        getTime();
-      }, []);
-
-
-      const getTime = () => {
-        const timeList: TimeSlot[] = [];
-        for (let i = 10; i <= 12; i++) {
-          timeList.push({
-            time: i + ":00 AM",
-          });
-          timeList.push({
-            time: i + ":30 AM",
-          });
-        }
-        for (let i = 1; i <= 6; i++) {
-          timeList.push({
-            time: i + ":00 PM",
-          });    
-          timeList.push({
-            time: i + ":30 PM",
-          });
-        }
-    
-        setTimeSlot(timeList);
-      };
-      
-    
+  
+  useEffect(() => {
+    getTime();
+  }, []);
+  
+  const getTime = () => {
+    const timeList: TimeSlot[] = [];
+  
+    for (let i = 10; i <= 12; i++) {
+      timeList.push({ time: i + ":00 AM" });
+      timeList.push({ time: i + ":30 AM" });
+    }
+  
+    for (let i = 1; i <= 6; i++) {
+      timeList.push({ time: i + ":00 PM" });
+      timeList.push({ time: i + ":30 PM" });
+    }
+  
+    setTimeSlot(timeList);
+  };
+  
+  // Helper function to add or subtract 30 minutes to a given time slot
+  const adjustTime = (time: string, adjust: number): string => {
+    const [hours, minutes, period] = time.split(/[:\s]/); // Split "12:30 PM" into components
+    let hour = parseInt(hours);
+    let minute = parseInt(minutes);
+    if (period === "PM" && hour !== 12) hour += 12; // Convert PM hours to 24-hour format
+  
+    const date = new Date();
+    date.setHours(hour, minute, 0, 0); // Set the date object with time
+  
+    // Add or subtract 30 minutes
+    date.setMinutes(date.getMinutes() + adjust);
+  
+    const newHour = date.getHours();
+    const newMinute = date.getMinutes() === 0 ? "00" : "30";
+    const newPeriod = newHour >= 12 ? "PM" : "AM";
+    const formattedHour = newHour % 12 === 0 ? 12 : newHour % 12;
+  
+    return `${formattedHour}:${newMinute} ${newPeriod}`;
+  };
+  
+  // Function to check if a time slot or its adjacent slots are booked
+  const isBookedOrAdjacent = (time: string): boolean => {
+    const beforeTime = adjustTime(time, -30); // Get the previous time slot
+    const afterTime = adjustTime(time, 30); // Get the next time slot
+  
+    // Check if the time slot or its adjacent slots are in the bookedSlot array
+    return (
+      bookedSlot.some((slot) => slot.time === time) ||
+      bookedSlot.some((slot) => slot.time === beforeTime) ||
+      bookedSlot.some((slot) => slot.time === afterTime)
+    );
+  };
      
 
       return (
@@ -427,9 +464,9 @@ useEffect(() => {
                       <Button
                         key={index}
                         variant="outline"
-                       // disabled={isBooked(item.time) || prevDate >= date } 
+                        disabled={isBookedOrAdjacent(item.time)} //
                         className={`border rounded-full p-2 px-3 hover:bg-black hover:text-white ${
-                          selectedTime == item.time && "bg-white text-black"
+                          selectedTime === item.time ? "bg-white text-black" : ""
                         }`}
                        
                         onClick={() => handleTimeSlotSelection(item.time)}

@@ -35,7 +35,7 @@ import { time } from "console";
 import { Value } from "@radix-ui/react-select";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 import { debounce } from 'lodash';
-
+import dayjs from 'dayjs'
 
 
 export enum FormFieldType {
@@ -284,13 +284,17 @@ useEffect(() => {
       }
     
       const fieldValue = newValue.toISOString().split('T')[0]; // Convert Date to 'YYYY-MM-DD' format
-      console.log(fieldValue);
-    
+     // console.log(fieldValue);
+      console.log(field.value);
       // Assuming `appointments` is available here, pass it along with fieldValue
       businessBookedSlot(fieldValue, appointments);
     };
     
-    
+     const adjustDate = (selectedDate: Date) => {
+      const adjustedDate = new Date(selectedDate);
+      adjustedDate.setDate(adjustedDate.getDate() + 1); // Add one day to the selected date
+      return adjustedDate;
+    };
 
       const businessBookedSlot = (fieldValue: string, appointments: Appointment[]| null) => {
         if (!fieldValue) {
@@ -299,8 +303,10 @@ useEffect(() => {
         }
       
         // Convert field.value into a Date object
-        const selectedDate = new Date(field.value);
-      
+        const selectedDate = new Date(fieldValue);
+        const adjustedDate = adjustDate(selectedDate);
+        console.log(`date originale: ${selectedDate}`)
+        console.log(`date nuevo: ${adjustedDate}`)
         if (isNaN(selectedDate.getTime())) {
           console.error('Invalid date');
           return;
@@ -310,7 +316,7 @@ useEffect(() => {
         if (appointments && appointments.length > 0) {
         const filteredAppointments = appointments.filter((appointment) => {
           const appointmentDate = new Date(appointment.schedule);
-          return appointmentDate.toDateString() === selectedDate.toDateString();
+          return appointmentDate.toDateString() === adjustedDate.toDateString();
         });
       
         console.log(`Appointments on ${selectedDate.toDateString()}:`, filteredAppointments);

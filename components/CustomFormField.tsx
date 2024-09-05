@@ -277,11 +277,19 @@ useEffect(() => {
     //   }
     // )
        
-    const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const fieldValue = event.target.value;
-      console.log(fieldValue)
-         businessBookedSlot(fieldValue, appointments)
-    }
+    const handleFieldChange = (newValue: Date | undefined) => {
+      if (!newValue) {
+        console.error('Selected date is undefined');
+        return;
+      }
+    
+      const fieldValue = newValue.toISOString().split('T')[0]; // Convert Date to 'YYYY-MM-DD' format
+      console.log(fieldValue);
+    
+      // Assuming `appointments` is available here, pass it along with fieldValue
+      businessBookedSlot(fieldValue, appointments);
+    };
+    
     
 
       const businessBookedSlot = (fieldValue: string, appointments: Appointment[]| null) => {
@@ -301,7 +309,7 @@ useEffect(() => {
         // Filter appointments for the selected date
         if (appointments && appointments.length > 0) {
         const filteredAppointments = appointments.filter((appointment) => {
-          const appointmentDate = new Date(appointment.appointmentDate);
+          const appointmentDate = new Date(appointment.schedule);
           return appointmentDate.toDateString() === selectedDate.toDateString();
         });
       
@@ -397,12 +405,15 @@ useEffect(() => {
                   <div className=" ml-[-12px] flex flex-col gap-5 items-baseline">
                     <h2 className="mt-5 font-bold">Select Date</h2>
                     <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange && handleFieldChange }
-                      className="rounded-md border pl-2"
-                      
-                    />
+                       mode="single"
+                       selected={field.value}
+                       onSelect={(date) => {
+                       field.onChange(date); // Update the field with the selected date
+                        handleFieldChange(date); // Call your custom handler
+                                          }}
+                       className="rounded-md border pl-2"
+                     />
+
                   </div>
                   <h2 className="my-5 font-bold">Select Time Slot</h2>
                   <div className="grid grid-cols-3 gap-3">

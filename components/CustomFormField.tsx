@@ -69,16 +69,21 @@ interface CustomProps {
   fieldType: FormFieldType;
   timeList?: string;
   timeSlots?: TimeSlot;
-  
-   
+  doctorValue?: string | null;
+ // selectedDoctor?: any;
+  setSelectedDoctor?: (value: any) => void;
+  selectedDoctor?: string | null;
+  onValueChange?: (value: string) => void;
 }
 
 
 //console.log({Cu})
-const RenderInput = ({ field, props, }: { field: any; props: CustomProps }) => {
-  
+const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => {
 
+ 
+  //const [selectedDoctor, setSelectedDoctor] = useState(props.doctorValue);
   switch (props.fieldType) {
+    
     case FormFieldType.INPUT:
       return (
         <div className="flex rounded-md border border-dark-500 bg-dark-400">
@@ -143,8 +148,8 @@ const RenderInput = ({ field, props, }: { field: any; props: CustomProps }) => {
 
 
     case FormFieldType.DATE_PICKER:
-
-
+      console.log("Selected Doctor in DatePicker:", props.selectedDoctor);
+      //  console.log(selectedDoctor)
 // State to hold appointments fetched from the database
 // const [appointments, setAppointments] = useState([]);
 // const appointment = await getRecentAppointmentList();
@@ -269,7 +274,6 @@ useEffect(() => {
    
 const [timeSlot, setTimeSlot] = useState<TimeSlot[]>([]);
 const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming bookedSlot is your booked appointments
-
       const [selectedTime, setSelectedTime] = useState<string>();
 
 
@@ -434,7 +438,7 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
          {format(field.value, "PPP h:mm aa")}
           </>
                      ) :(
-                        <span>Pick a date</span>
+                        <span>Pick a date </span>
                       )}
                       <CalendarIcon className="ml-auto h-5 w-5 opacity-50" />
                     </Button>
@@ -442,7 +446,7 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
             </SheetTrigger>
             <SheetContent className=" h-22 bg-neutral-950  overflow-auto">
               <SheetHeader>
-                <SheetTitle>Book a Service </SheetTitle>
+                <SheetTitle>Book a Service {} </SheetTitle>
                 <SheetDescription>
                   Select Date and Time slot to book an service
                   <div className=" ml-[-12px] flex flex-col gap-5 items-baseline">
@@ -498,21 +502,29 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
         </div>
       
       );
-    case FormFieldType.SELECT:
-      return (
-        <FormControl>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl>
-              <SelectTrigger className="shad-select-trigger">
-                <SelectValue placeholder={props.placeholder} />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent className="shad-select-content">
-              {props.children}
-            </SelectContent>
-          </Select>
-        </FormControl>
-      );
+      case FormFieldType.SELECT:
+        return (
+          <FormControl>
+            <Select 
+             onValueChange={(value) => {
+              field.onChange(value);
+              if (props.onValueChange) {
+                props.onValueChange(value);
+              }
+            }} 
+            defaultValue={field.value}
+          >
+                          <FormControl>
+                <SelectTrigger className="shad-select-trigger">
+                  <SelectValue placeholder={props.placeholder} />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent className="shad-select-content">
+                {props.children}
+              </SelectContent>
+            </Select>
+          </FormControl>
+        );
     case FormFieldType.SKELETON:
       return props.renderSkeleton ? props.renderSkeleton(field) : null;
     default:
@@ -521,9 +533,10 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
 };
 
 const CustomFormField = (props: CustomProps) => {
-  const { control, name, label } = props;
-
+  const { control, name, label, doctorValue } = props;
+  
   return (
+    
     <FormField
       control={control}
       name={name}
@@ -532,7 +545,9 @@ const CustomFormField = (props: CustomProps) => {
           {props.fieldType !== FormFieldType.CHECKBOX && label && (
             <FormLabel className="shad-input-label">{label}</FormLabel>
           )}
-          <RenderInput field={field} props={props} />
+          <RenderInput field={field} props={props} 
+           
+          />
 
           <FormMessage className="shad-error" />
         </FormItem>

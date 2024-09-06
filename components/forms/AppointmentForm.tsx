@@ -144,8 +144,10 @@ export const AppointmentForm = ({
   }
 
   const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
-  console.log(selectedDoctor)
-  return (
+  const handleDoctorChange = (value: string) => {
+    setSelectedDoctor(value);
+  };
+   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
         {type === "create" && (
@@ -166,7 +168,8 @@ export const AppointmentForm = ({
               name="primaryPhysician"
               label="Doctor"
               placeholder="Select a doctor"
-              
+              doctorValue={selectedDoctor}
+              onValueChange={handleDoctorChange}
             >
               {Doctors.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
@@ -191,7 +194,7 @@ export const AppointmentForm = ({
               name="schedule"
               label="Expected appointment date"
               dateFormat="MM/dd/yyyy  -  h:mm aa"
-              
+              selectedDoctor={selectedDoctor}
             />
 
             <div
@@ -201,9 +204,10 @@ export const AppointmentForm = ({
               fieldType={FormFieldType.SELECT}
               control={form.control}
               name="reason"
-              label="Appointment reason"
-              placeholder={selectedDoctor}
-            >
+              label="Doctor"
+              placeholder='Select a doctor'
+             
+               >
               {Doctors.map((doctor, i) => (
                 <SelectItem key={doctor.name + i} value={doctor.name}>
                   <div className="flex cursor-pointer items-center gap-2">
@@ -227,7 +231,7 @@ export const AppointmentForm = ({
                 control={form.control}
                 name="note"
                 label="Comments/notes"
-                placeholder={selectedDoctor}
+                placeholder='appointment reason'
                 disabled={type === "schedule"}
               />
             </div>

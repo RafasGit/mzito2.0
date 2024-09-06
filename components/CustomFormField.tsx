@@ -321,7 +321,8 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
         if (appointments && appointments.length > 0) {
         const filteredAppointments = appointments.filter((appointment) => {
           const appointmentDate = new Date(appointment.schedule);
-          return appointmentDate.toDateString() === adjustedDate.toDateString();
+          return appointmentDate.toDateString() === adjustedDate.toDateString()&&
+          appointment.primaryPhysician === props.selectedDoctor;
         });
       
         console.log(`Appointments on ${adjustedDate.toDateString()}:`, filteredAppointments);

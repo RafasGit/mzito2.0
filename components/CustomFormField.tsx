@@ -148,167 +148,163 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
 
 
     case FormFieldType.DATE_PICKER:
-      console.log("Selected Doctor in DatePicker:", props.selectedDoctor);
-      //  console.log(selectedDoctor)
-// State to hold appointments fetched from the database
-// const [appointments, setAppointments] = useState([]);
-// const appointment = await getRecentAppointmentList();
-//    setAppointments(appointment)
 
-
-// Example structure of appointments array
-// appointments = [
-//   { id: 1, serviceProviderId: 'sp1', appointmentTime: '2024-09-03T15:00:00Z' },
-//   { id: 2, serviceProviderId: 'sp2', appointmentTime: '2024-09-03T16:30:00Z' },
-//   ...
-// ];
-
-interface TimeSlot {
-  time: string;
-}
-
-interface Patient {
-  email: string;
-  phone: string;
-  userId: string | null;
-  name?: string;
-  primaryPhysician: string | null;
-  $id: string;
-  $tenant: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: any[];
-  $databaseId: string;
-  $collectionId: string;
-}
-
-interface Appointment {
-  appointmentId: string;
-  schedule: string;
-  reason: string;
-  note: string;
-  primaryPhysician: string;
-  status: string;
-  userId?: string;
-  cancellationReason?: string;
-  patientName?: string;
-  doctorName: string;
-  appointmentDate: Date;
-  patient: Patient; // Assuming it's a single patient
-}
-interface AppointmentResponse {
-  totalCount: number;
-  scheduledCount: number;
-  pendingCount: number;
-  cancelledCount: number;
-  documents: Appointment[];
-}
-
-const [appointments, setAppointments] = useState<Appointment[] | null>(null);
-
-const processAppointments = (response: AppointmentResponse | undefined) => {
-  if (!response) {
-    console.error('Response is undefined');
-    return;
+  interface TimeSlot {
+    time: string;
   }
 
-
-  const { totalCount, scheduledCount, pendingCount, cancelledCount,  documents} = response;
-
-   console.log(response)
-  if (!documents) {
-    console.error('Documents array is undefined');
-    return;
+  interface Patient {
+    email: string;
+    phone: string;
+    userId: string | null;
+    name?: string;
+    primaryPhysician: string | null;
+    $id: string;
+    $tenant: string;
+    $createdAt: string;
+    $updatedAt: string;
+    $permissions: any[];
+    $databaseId: string;
+    $collectionId: string;
   }
 
-  // Store individual appointments
-  setAppointments(documents); 
-}
-
-
-
-const fetchAppointments = async () => {
-  try {
-    const appointmentList = await getRecentAppointmentList();
-    if (appointmentList && typeof appointmentList === 'object') {
-      processAppointments(appointmentList as AppointmentResponse);
-    } else {
-      console.error('Received invalid appointment data:', appointmentList);
-    }
-  } catch (error) {
-    console.error('Error fetching appointments:', error);
+  interface Appointment {
+    appointmentId: string;
+    schedule: string;
+    reason: string;
+    note: string;
+    primaryPhysician: string;
+    status: string;
+    userId?: string;
+    cancellationReason?: string;
+    patientName?: string;
+    doctorName: string;
+    appointmentDate: Date;
+    patient: Patient; // Assuming it's a single patient
   }
-};
-   
+  interface AppointmentResponse {
+    totalCount: number;
+    scheduledCount: number;
+    pendingCount: number;
+    cancelledCount: number;
+    documents: Appointment[];
+  }
 
-// Fetch appointments when the component mounts
-useEffect(() => {
-  fetchAppointments();
-}, []); // Empty dependency array ensures this runs only once on mount
+   const [appointments, setAppointments] = useState<Appointment[] | null>(null);
 
-
-// if (appointments && appointments.length > 0) {
-//   console.log(appointments[0]); // Log the first appointment directly
-// } else {
-//   console.log('No appointments available');
-// }
-
-
- // Function to check if the selected time slot is booked
-//  const isTimeSlotBooked = (time) => {
-//   // Combine the selected date and time into a Date object
-//   const selectedDateTime = new Date(field.value);
-//   const [hours, minutes] = time.split(':').map(Number);
-//   selectedDateTime.setHours(hours, minutes);
-
-//   // Check if any appointment matches the selected time and service provider
-//   return appointments.some(
-//     (appointment) =>
-//       appointment.serviceProviderId === selectedServiceProvider &&
-//       new Date(appointment.appointmentTime).getTime() === selectedDateTime.getTime()
-//   );
-// };
-  
-     
-
-   
-const [timeSlot, setTimeSlot] = useState<TimeSlot[]>([]);
-const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming bookedSlot is your booked appointments
-      const [selectedTime, setSelectedTime] = useState<string>();
+   const processAppointments = (response: AppointmentResponse | undefined) => {
+    if (!response) {
+      console.error('Response is undefined');
+      return;
+    } 
 
 
-    //   useEffect(() => {
-    //     businessBookedSlot();
-    //   }
-    // )
-       
-    const handleFieldChange = (newValue: Date | undefined) => {
-      if (!newValue) {
-        console.error('Selected date is undefined');
+    const { totalCount, scheduledCount, pendingCount, cancelledCount,  documents} = response;
+
+      console.log(response)
+      if (!documents) {
+        console.error('Documents array is undefined');
         return;
       }
-    
-      const fieldValue = newValue.toISOString().split('T')[0]; // Convert Date to 'YYYY-MM-DD' format
-     // console.log(fieldValue);
-      console.log(field.value);
-      // Assuming `appointments` is available here, pass it along with fieldValue
-      businessBookedSlot(fieldValue, appointments);
-    };
-    
-     const adjustDate = (selectedDate: Date) => {
-      const adjustedDate = new Date(selectedDate);
-      adjustedDate.setDate(adjustedDate.getDate() + 1); // Add one day to the selected date
-      return adjustedDate;
-    };
 
-      const businessBookedSlot = (fieldValue: string, appointments: Appointment[]| null) => {
-        if (!fieldValue) {
-          console.error('Field value is undefined or empty');
+      // Store individual appointments
+        setAppointments(documents); 
+    }
+
+
+
+     const fetchAppointments = async () => {
+      try {
+        const appointmentList = await getRecentAppointmentList();
+        if (appointmentList && typeof appointmentList === 'object') {
+          processAppointments(appointmentList as AppointmentResponse);
+        } else {
+          console.error('Received invalid appointment data:', appointmentList);
+        }
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    };
+      
+
+       // Fetch appointments when the component mounts
+         useEffect(() => {
+          fetchAppointments();
+        }, []); // Empty dependency array ensures this runs only once on mount
+
+
+
+    //   console.log(appointments[0]); // Log the first appointment directly
+    // } else {
+    //   console.log('No appointments available');
+    // }
+
+
+    // Function to check if the selected time slot is booked
+    //  const isTimeSlotBooked = (time) => {
+    //   // Combine the selected date and time into a Date object
+    //   const selectedDateTime = new Date(field.value);
+    //   const [hours, minutes] = time.split(':').map(Number);
+    //   selectedDateTime.setHours(hours, minutes);
+
+    //   // Check if any appointment matches the selected time and service provider
+    //   return appointments.some(
+    //     (appointment) =>
+    //       appointment.serviceProviderId === selectedServiceProvider &&
+    //       new Date(appointment.appointmentTime).getTime() === selectedDateTime.getTime()
+    //   );
+    // };
+      
+        
+
+      
+    const [timeSlot, setTimeSlot] = useState<TimeSlot[]>([]);
+    const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming bookedSlot is your booked appointments
+    const [selectedTime, setSelectedTime] = useState<string | undefined>();
+    const [fieldValue, setFieldValue] = useState<string | null>(null); 
+
+        //   useEffect(() => {
+        //     businessBookedSlot();
+        //   }
+        // )
+        // useEffect(() => {
+        //   if (fieldValue && props.selectedDoctor) {
+        //     businessBookedSlot(fieldValue, appointments, props.selectedDoctor);
+        //   }
+        // }, [fieldValue, props.selectedDoctor]);
+       
+      const handleFieldChange = (newValue: Date | undefined) => {
+        if (!newValue) {
+          console.error('Selected date is undefined');
           return;
         }
       
+      const formattedDate = newValue.toISOString().split('T')[0]; // Convert Date to 'YYYY-MM-DD' format
+        setFieldValue(formattedDate);
+        // console.log(fieldValue);
+        console.log(field.value);
+        // Assuming `appointments` is available here, pass it along with fieldValue
+        businessBookedSlot(formattedDate, appointments, props.selectedDoctor);
+      };
+    
+      const adjustDate = (selectedDate: Date) => {
+       const adjustedDate = new Date(selectedDate);
+       adjustedDate.setDate(adjustedDate.getDate() + 1); // Add one day to the selected date
+      return adjustedDate;
+    };
+
+      const businessBookedSlot = (
+        fieldValue: string | undefined, 
+        appointments: Appointment[]| null,
+        selectedDoctor: string | null| undefined
+        ) => {
+          if (!fieldValue) {
+            console.error('Field value is undefined or empty');
+            return;
+          }
+        
         // Convert field.value into a Date object
-        const selectedDate = new Date(fieldValue);
+       const selectedDate = new Date(fieldValue);
         const adjustedDate = adjustDate(selectedDate);
         console.log(`date originale: ${selectedDate}`)
         console.log(`date nuevo: ${adjustedDate}`)
@@ -316,111 +312,150 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
           console.error('Invalid date');
           return;
         }
-      
+        
+        
         // Filter appointments for the selected date
         if (appointments && appointments.length > 0) {
-        const filteredAppointments = appointments.filter((appointment) => {
-          const appointmentDate = new Date(appointment.schedule);
-          return appointmentDate.toDateString() === adjustedDate.toDateString()&&
-          appointment.primaryPhysician === props.selectedDoctor;
+          
+       const filteredAppointments = appointments.filter((appointment) => {
+        console.log(`primaryPhysician: ${appointment.primaryPhysician}` )
+        console.log(`propdoctor ${selectedDoctor}`)
+       const appointmentDate = new Date(appointment.schedule);
+        return appointmentDate.toDateString() === adjustedDate.toDateString()&&
+         appointment.primaryPhysician === selectedDoctor;
         });
-      
+       
         console.log(`Appointments on ${adjustedDate.toDateString()}:`, filteredAppointments);
         
   // Map the filteredAppointments to TimeSlot[] format
-    const bookedSlots = filteredAppointments.map((appointment) => ({
-     time: new Date(appointment.schedule).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }), // Convert appointment.schedule to the correct time format
-   }));
+       const bookedSlots = filteredAppointments.map((appointment) => ({
+        time: new Date(appointment.schedule).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+       }), // Convert appointment.schedule to the correct time format
+      }));
 
-  setBookedSlot(bookedSlots); // Set the correct format in setBookedSlot
+        setBookedSlot(bookedSlots); // Set the correct format in setBookedSlot
 
-  return bookedSlots;
+        return bookedSlots.map(slot => slot.time) || [];
       }
       };
-     
 
-      const handleTimeSlotSelection = (time: string) => {
-        if (!field.value) return; // Ensure a date is selected first
+
       
-        // Parse the selected date into a Date object
+    useEffect(() => {
+      getTime();
+      }, []);
+    
+        const getTime = () => {
+        const timeList: TimeSlot[] = [];
+    
+          for (let i = 10; i <= 12; i++) {
+          timeList.push({ time: i + ":00 AM" });
+          timeList.push({ time: i + ":30 AM" });
+        }
+    
+          for (let i = 1; i <= 6; i++) {
+          timeList.push({ time: i + ":00 PM" });
+          timeList.push({ time: i + ":30 PM" });
+        }
+    
+        setTimeSlot(timeList);
+      };
+    
+
+      // Function to check if a time slot or its adjacent slots are booked
+      const isBookedOrAdjacent = (time: string, bookedSlots: TimeSlot[], selectedDoctor: string | null | undefined): boolean => {
+        // Convert the time string to a Date object
+        const timeDate = new Date(time);
+
+        // Find the current time slot
+        const currentTimeSlot = bookedSlots.find(slot => 
+          new Date(slot.time).setHours(0, 0, 0, 0) === timeDate.setHours(0, 0, 0, 0)
+        );
+        console.log(currentTimeSlot)
+
+        // If the current time slot is booked, return true
+        if (currentTimeSlot) {
+          return true;
+        }
+
+        // Get the current time in 24-hour format
+        const currentTime = timeDate.getHours();
+ 
+        // Check if the current time slot is booked
+        const isCurrentBooked = bookedSlots.some(slot => {
+          const slotTime = new Date(slot.time);
+          return slotTime.getHours() === currentTime && 
+                slotTime.getMinutes() === timeDate.getMinutes() &&
+                slotTime.getSeconds() === timeDate.getSeconds();
+        });
+
+        // If the current time slot is booked, return true
+        if (isCurrentBooked) {
+          return true;
+        }
+
+        // Check adjacent time slots
+        const adjacentSlots = [
+          { hours: currentTime - 1, minutes: timeDate.getMinutes(), seconds: timeDate.getSeconds() },
+          { hours: currentTime + 1, minutes: timeDate.getMinutes(), seconds: timeDate.getSeconds() }
+        ];
+
+        return adjacentSlots.some(adjacentTime => {
+          const adjacentDate = new Date();
+          adjacentDate.setHours(adjacentTime.hours, adjacentTime.minutes, adjacentTime.seconds);
+          return bookedSlots.some(slot => {
+            const slotDate = new Date(slot.time);
+            return slotDate.getHours() === adjacentTime.hours &&
+                  slotDate.getMinutes() === adjacentTime.minutes &&
+                  slotDate.getSeconds() === adjacentTime.seconds;
+          });
+        });
+      };
+        const handleTimeSlotSelection = (time: string) => {
+         if (!field.value) return; // Ensure a date is selected first
+  
+    // Parse the selected date into a Date object
         const selectedDate = new Date(field.value);
-      
-        // Split the selected time into hours and minutes
+        const adjustedDate = adjustDate(selectedDate);
+
+        if (!adjustedDate || isNaN(selectedDate.getTime())) {
+          console.error('Invalid date');
+          return;
+        }
+    // Split the selected time into hours and minutes
         const [timeString, period] = time.split(' ');
-        let [hours, minutes] = timeString.split(':').map(Number);
-      
-         // Convert 12-hour format to 24-hour format
-      if (period === 'PM' && hours < 12) {
-    hours += 12;
-     } else if (period === 'AM' && hours === 12) {
-    hours = 0;
-    }
+          let [hours, minutes] = timeString.split(':').map(Number);
+  
+        // Convert 12-hour format to 24-hour format
+          if (period === 'PM' && hours < 12) {
+            hours += 12;
+          } else if (period === 'AM' && hours === 12) {
+            hours = 0;
+          }
 
-      // Set hours and minutes to the selectedDate object
-    selectedDate.setHours(hours, minutes);
+        // Set hours and minutes to the selectedDate object
+          selectedDate.setHours(hours, minutes);
 
-     // Update field.value with the combined date and time
-    field.onChange(selectedDate);
-   setSelectedTime(time); // Keep track of the selected time
-  }; 
-  
-  useEffect(() => {
-    getTime();
-  }, []);
-  
-  const getTime = () => {
-    const timeList: TimeSlot[] = [];
-  
-    for (let i = 10; i <= 12; i++) {
-      timeList.push({ time: i + ":00 AM" });
-      timeList.push({ time: i + ":30 AM" });
-    }
-  
-    for (let i = 1; i <= 6; i++) {
-      timeList.push({ time: i + ":00 PM" });
-      timeList.push({ time: i + ":30 PM" });
-    }
-  
-    setTimeSlot(timeList);
-  };
-  
-  // Helper function to add or subtract 30 minutes to a given time slot
-  const adjustTime = (time: string, adjust: number): string => {
-    const [hours, minutes, period] = time.split(/[:\s]/); // Split "12:30 PM" into components
-    let hour = parseInt(hours);
-    let minute = parseInt(minutes);
-    if (period === "PM" && hour !== 12) hour += 12; // Convert PM hours to 24-hour format
-  
-    const date = new Date();
-    date.setHours(hour, minute, 0, 0); // Set the date object with time
-  
-    // Add or subtract 30 minutes
-    date.setMinutes(date.getMinutes() + adjust);
-  
-    const newHour = date.getHours();
-    const newMinute = date.getMinutes() === 0 ? "00" : "30";
-    const newPeriod = newHour >= 12 ? "PM" : "AM";
-    const formattedHour = newHour % 12 === 0 ? 12 : newHour % 12;
-  
-    return `${formattedHour}:${newMinute} ${newPeriod}`;
-  };
-  
-  // Function to check if a time slot or its adjacent slots are booked
-  const isBookedOrAdjacent = (time: string): boolean => {
-    const beforeTime = adjustTime(time, -30); // Get the previous time slot
-    const afterTime = adjustTime(time, 30); // Get the next time slot
-  
-    // Check if the time slot or its adjacent slots are in the bookedSlot array
-    return (
-      bookedSlot.some((slot) => slot.time === time) ||
-      bookedSlot.some((slot) => slot.time === beforeTime) ||
-      bookedSlot.some((slot) => slot.time === afterTime)
-    );
-  };
-     
+        // Update field.value with the combined date and time
+          field.onChange(selectedDate);
+          setSelectedTime(time); // Keep track of the selected time
+
+        const isDisabled = isBookedOrAdjacent(`${adjustedDate.getFullYear()}-${adjustedDate.getMonth() + 1}-${adjustedDate.getDate()} ${time}`, bookedSlot, props.selectedDoctor);
+        if (isDisabled) {
+          console.log(`Time slot ${time} is disabled`);
+          return;
+        }
+      }; 
+      const [adjustedDate, setAdjustedDate] = useState<Date | null>(null);
+
+      useEffect(() => {
+        if (field.value) {
+          const selectedDate = new Date(field.value);
+          setAdjustedDate(adjustDate(selectedDate));
+        }
+      }, [field.value]);
 
       return (
         <div>
@@ -457,7 +492,7 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
                        selected={field.value}
                        onSelect={(date) => {
                        field.onChange(date); // Update the field with the selected date
-                        handleFieldChange(date); // Call your custom handler
+                        handleFieldChange(date,); // Call your custom handler
                                           }}
                        className="rounded-md border pl-2"
                      />
@@ -465,20 +500,28 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
                   </div>
                   <h2 className="my-5 font-bold">Select Time Slot</h2>
                   <div className="grid grid-cols-3 gap-3">
-                    {timeSlot.map((item, index) => (
+                  {timeSlot.map((item, index) => (
                       <Button
                         key={index}
                         variant="outline"
-                        disabled={isBookedOrAdjacent(item.time)} //
+                        disabled={
+                          isBookedOrAdjacent(
+                            `${adjustedDate?.getFullYear()?.toString()}-${adjustedDate?.getMonth()?.toString()}-${adjustedDate?.getDate()?.toString()} ${item.time}`,
+                            bookedSlot,
+                            props.selectedDoctor
+                          )
+                        }
+                       // disabled={isBooked(item.time) || prevDate >= date } 
                         className={`border rounded-full p-2 px-3 hover:bg-black hover:text-white ${
-                          selectedTime === item.time ? "bg-white text-black" : ""
+                          selectedTime == item.time && "bg-white text-black"
                         }`}
                        
                         onClick={() => handleTimeSlotSelection(item.time)}
                       >
                         {item.time}
-                      </Button>
-                    ))}
+                        </Button>
+                      ),
+                    )}
                   </div>
                 </SheetDescription>
               </SheetHeader>
@@ -486,22 +529,22 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
                 <SheetClose asChild>
                   <div className="flex gap-2">
                     <Button variant="destructive" className=" shad-danger-btn w-24">
-                      Cancel
-                    </Button>
-    
-                    <Button className="shad-primary-btn w-24"
-                      //disabled={(date !(selectedTime && date) || date > new Date() }
-                     
-                    >
-                      Confirm
-                    </Button>
-                  </div>
-                </SheetClose>
-              </SheetFooter>
-            </SheetContent>
-          </Sheet>
-        </div>
-      
+                            Cancel
+                          </Button>
+          
+                          <Button className="shad-primary-btn w-24"
+                            //disabled={(date !(selectedTime && date) || date > new Date() }
+                          
+                          >
+                            Confirm
+                          </Button>
+                        </div>
+                      </SheetClose>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
+              </div>
+            
       );
       case FormFieldType.SELECT:
         return (
@@ -526,36 +569,36 @@ const [bookedSlot, setBookedSlot] = useState<TimeSlot[]>([]); // Assuming booked
             </Select>
           </FormControl>
         );
-    case FormFieldType.SKELETON:
-      return props.renderSkeleton ? props.renderSkeleton(field) : null;
-    default:
-      return null;
-   }
-};
+          case FormFieldType.SKELETON:
+            return props.renderSkeleton ? props.renderSkeleton(field) : null;
+          default:
+            return null;
+        }
+      };
 
-const CustomFormField = (props: CustomProps) => {
-  const { control, name, label, doctorValue } = props;
-  
-  return (
-    
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className="flex-1">
-          {props.fieldType !== FormFieldType.CHECKBOX && label && (
-            <FormLabel className="shad-input-label">{label}</FormLabel>
-          )}
-          <RenderInput field={field} props={props} 
-           
+      const CustomFormField = (props: CustomProps) => {
+      const { control, name, label, doctorValue } = props;
+
+        return (
+          
+          <FormField
+            control={control}
+            name={name}
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                {props.fieldType !== FormFieldType.CHECKBOX && label && (
+                  <FormLabel className="shad-input-label">{label}</FormLabel>
+                )}
+                <RenderInput field={field} props={props} 
+                
+                />
+
+                <FormMessage className="shad-error" />
+              </FormItem>
+            )}
           />
-
-          <FormMessage className="shad-error" />
-        </FormItem>
-      )}
-    />
-  );
-};
+        );
+      };
 
 export default CustomFormField;
 

@@ -42,8 +42,8 @@ export const IdentificationTypes = [
   
   export const Doctors = [
     {
-      image: "/assets/images/dr-green.png",
-      name: "Chair One",
+      image: "/assets/images/dr-livingston.png",
+      name: "David Livingston",
     },
     {
       image: "/assets/images/dr-cameron.png",

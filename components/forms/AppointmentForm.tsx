@@ -204,7 +204,7 @@ export const AppointmentForm = ({
               fieldType={FormFieldType.SELECT}
               control={form.control}
               name="reason"
-              label="Doctor"
+              label="Choose service"
               placeholder='Select a doctor'
              
                >

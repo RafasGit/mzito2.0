@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 interface TimeSlot {
     time: string;
     isBooked: boolean;
+    disabled?: boolean;
   }
   
 interface TimeSlotGridProps {

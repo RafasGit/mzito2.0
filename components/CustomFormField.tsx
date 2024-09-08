@@ -667,27 +667,30 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
      
           const getBookedSlots = (date: Date, appointments: Appointment[] | null, selectedDoctor: string | null| undefined): TimeSlot[] => {
             // Filter appointments for the given date
-            const dateString = date.toISOString().split('T')[0];
-            const appointmentsForDate = appointments!.filter(appt => 
+           // const dateString = date.toISOString().split('T')[0];
+            const adjustedDate = new Date(date);
+            adjustedDate.setDate(adjustedDate.getDate() + 1);
+            const dateString = adjustedDate.toISOString().split('T')[0];
+            console.log(`New {dateString}`)
+            const appointmentsForDate = appointments?.filter(appt => 
               appt.schedule.startsWith(dateString)&& appt.primaryPhysician === selectedDoctor
             );
-          
+            //console.log(`here's the ${appointmentsForDate}`)
             // Create a map of booked times
-            const bookedSlots: TimeSlot[] = appointmentsForDate.map(appt => {
+            const bookedSlots: TimeSlot[] = (appointmentsForDate || []).map(appt => {
               const apptTime = new Date(appt.schedule);
               return {
                 time: apptTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase(),
                 isBooked: true
               };
             });
-          
+          // console.log(bookedSlots)
             return bookedSlots;
           };
         
       const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
       const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
-    
-
+      const [updatedTimeSlots, setUpdatedTimeSlots] = useState<TimeSlot[]>([]);
         const generateTimeSlots = (): TimeSlot[] => {
           const slots: TimeSlot[] = [];
           for (let hour = 10; hour <= 18; hour++) {
@@ -703,10 +706,76 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       const handleDateSelect = (date: Date | undefined) => {
         setSelectedDate(date);
         setSelectedTime(undefined);
+        if (date) {
+          field.onChange(date);
+        }
       };
+    // const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(null);
+      const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(props.selectedDoctor);
+
+      useEffect(() => {
+        //setSelectedDoctor(props.selectedDoctor);
+        setSelectedDate(undefined);
+        setSelectedTime(undefined);
+      }, [props.selectedDoctor]);
+      
+      // useEffect(() => {
+      //   setSelectedDate(undefined);
+      //   setSelectedTime(undefined);
+      // }, [selectedDoctor]);
     
+      
+
+      useEffect(() => {
+        
+        if (selectedDate && props.selectedDoctor) {
+          const bookedSlots = getBookedSlots(selectedDate, appointments, props.selectedDoctor);
+          const updatedTimeSlots = generateTimeSlots().map(slot => ({
+            ...slot,
+            isBooked: bookedSlots.some(bookedSlot => bookedSlot.time === slot.time)
+          }));
+          setUpdatedTimeSlots(updatedTimeSlots);
+        }
+      }, [selectedDate, props.selectedDoctor, appointments]);
+      
+      // const handleTimeSelect = (time: string) => {
+      //   setSelectedTime(time);
+        
+      //   // Combine selectedDate and time into a single Date object
+      //   if (selectedDate && time) {
+      //     const combinedDateTime = new Date(selectedDate);
+      //     const [hours, minutes] = time.split(':').map(Number);
+      //     combinedDateTime.setHours(hours, minutes);
+          
+         
+      //   }
+      // };
       const handleTimeSelect = (time: string) => {
         setSelectedTime(time);
+      
+        if (selectedDate && time) {
+          const dateObject = new Date(selectedDate);
+          const [timeString, period] = time.split(' ');
+          let [hours, minutes] = timeString.split(':').map(Number);
+      
+          if (period === 'PM' && hours < 12) {
+            hours += 12;
+          } else if (period === 'AM' && hours === 12) {
+            hours = 0;
+          }
+      
+          dateObject.setHours(hours, minutes);
+          field.onChange(dateObject);
+      
+          // Update timeSlots to reflect the selection
+          const updatedTimeSlots = timeSlots.map(slot => ({
+            ...slot,
+            disabled: slot.isBooked || slot.time === time
+          }));
+      
+          // You might need to create a new state for updatedTimeSlots
+          setUpdatedTimeSlots(updatedTimeSlots);
+        }
       };
     
       const timeSlots = selectedDate ? generateTimeSlots().map(slot => {
@@ -720,10 +789,12 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       return (
       
     <Sheet>
+     
     <SheetTrigger asChild>
+      
       <Button variant="outline" className="w-full justify-start text-left font-normal">
         <CalendarIcon className="mr-2 h-4 w-4" />
-        {selectedDate && selectedTime ? format(selectedDate, 'PPP') + ' at ' + selectedTime : 'Book a Service'}
+        {props.selectedDoctor && selectedDate && selectedTime ? format(selectedDate, 'PPP') + ' at ' + selectedTime : 'Book a Service'}
       </Button>
     </SheetTrigger>
     <SheetContent className="sm:max-w-[425px]">
@@ -731,7 +802,8 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         <SheetTitle>Book a Service</SheetTitle>
         <SheetDescription>Select Date and Time slot to book a service</SheetDescription>
       </SheetHeader>
-      <div className="grid gap-4 py-4">
+      <FormControl>     
+        <div className="grid gap-4 py-4">
         <div className="grid gap-2">
           <Calendar
             mode="single"
@@ -742,16 +814,22 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         </div>
         {selectedDate && (
           <div className="grid gap-2">
-            <TimeSlotGrid timeSlots={timeSlots} onSelectTimeSlot={handleTimeSelect} />
+            <TimeSlotGrid 
+              timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
+              onSelectTimeSlot={handleTimeSelect} 
+            />
           </div>
         )}
       </div>
+      </FormControl>
+ 
       <SheetFooter>
         <SheetClose asChild>
           <Button type="submit" disabled={!selectedDate || !selectedTime}>Confirm Booking</Button>
         </SheetClose>
       </SheetFooter>
     </SheetContent>
+     
   </Sheet>
               
       )

@@ -146,6 +146,7 @@ export const AppointmentForm = ({
   const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
   const handleDoctorChange = (value: string) => {
     setSelectedDoctor(value);
+    
   };
    return (
     <Form {...form}>

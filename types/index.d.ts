@@ -38,6 +38,14 @@ declare type SearchParamProps = {
     // privacyConsent: boolean;
   }
   
+ declare type PaymentParams = {
+  name: string;
+  phone: string;
+  email: string;
+  appointmentId: string;
+
+ }
+
   declare type CreateAppointmentParams = {
    // userId: string;
    // patient: string;

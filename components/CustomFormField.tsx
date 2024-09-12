@@ -18,6 +18,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { Calendar as CalendarIcon } from "lucide-react"
+import InlineExpandingSelect from "./ui/inlineExpand";
 import { cn } from "@/lib/utils";
 import {
   Popover,
@@ -37,7 +38,8 @@ import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 import { debounce } from 'lodash';
 import dayjs from 'dayjs'
 import TimeSlotGrid from "./timeslot";
-
+import CustomSelect from "./ui/custom-select";
+import { Doctors } from "@/constants";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -47,6 +49,7 @@ export enum FormFieldType {
   DATE_PICKER = "datePicker",
   SELECT = "select",
   SKELETON = "skeleton",
+  SALECT = "salect"
 }
 
 interface TimeSlot {
@@ -54,27 +57,42 @@ interface TimeSlot {
 }
 
 
+interface Option {
+  image: string;
+  name: string;
+  amount?: string;
+  duration?: string;
+}
+
+
+interface SelectOption {
+  value: string;
+  label: string;
+  image?: string;
+}
 
 interface CustomProps {
   control: Control<any>;
   name: string;
   label?: string | null;
-  placeholder?: string | null;
+  placeholder?: string | null ;
   iconSrc?: string;
   iconAlt?: string;
   disabled?: boolean;
   dateFormat?: string;
   showTimeSelect?: boolean;
-  children?: React.ReactNode;
+  children?: React.ReactNode  ;
   renderSkeleton?: (field: any) => React.ReactNode;
   fieldType: FormFieldType;
   timeList?: string;
+  options?: SelectOption[];
   timeSlots?: TimeSlot;
   doctorValue?: string | null;
  // selectedDoctor?: any;
   setSelectedDoctor?: (value: any) => void;
   selectedDoctor?: string | null;
   onValueChange?: (value: string) => void;
+  
 }
 
 
@@ -669,9 +687,10 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
             // Filter appointments for the given date
            // const dateString = date.toISOString().split('T')[0];
             const adjustedDate = new Date(date);
+          //  console.log(`our adjust ${adjustedDate}`)
             adjustedDate.setDate(adjustedDate.getDate() + 1);
             const dateString = adjustedDate.toISOString().split('T')[0];
-            console.log(`New {dateString}`)
+           // console.log(`New ${dateString}`)
             const appointmentsForDate = appointments?.filter(appt => 
               appt.schedule.startsWith(dateString)&& appt.primaryPhysician === selectedDoctor
             );
@@ -711,20 +730,20 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         }
       };
     // const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(null);
-      const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(props.selectedDoctor);
+     // const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(props.selectedDoctor);
 
-      useEffect(() => {
-        //setSelectedDoctor(props.selectedDoctor);
-        setSelectedDate(undefined);
-        setSelectedTime(undefined);
-      }, [props.selectedDoctor]);
+      // useEffect(() => {
+      //   //setSelectedDoctor(props.selectedDoctor);
+      //   setSelectedDate(undefined);
+      //   setSelectedTime(undefined);
+      // }, [props.selectedDoctor]);
       
       // useEffect(() => {
       //   setSelectedDate(undefined);
       //   setSelectedTime(undefined);
       // }, [selectedDoctor]);
     
-      
+     // console.log(`Daktari ${props.selectedDoctor}`)
 
       useEffect(() => {
         
@@ -738,20 +757,9 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         }
       }, [selectedDate, props.selectedDoctor, appointments]);
       
-      // const handleTimeSelect = (time: string) => {
-      //   setSelectedTime(time);
-        
-      //   // Combine selectedDate and time into a single Date object
-      //   if (selectedDate && time) {
-      //     const combinedDateTime = new Date(selectedDate);
-      //     const [hours, minutes] = time.split(':').map(Number);
-      //     combinedDateTime.setHours(hours, minutes);
-          
-         
-      //   }
-      // };
       const handleTimeSelect = (time: string) => {
         setSelectedTime(time);
+        console.log(`time ${selectedTime}`)
       
         if (selectedDate && time) {
           const dateObject = new Date(selectedDate);
@@ -792,7 +800,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
      
     <SheetTrigger asChild>
       
-      <Button variant="outline" className="w-full justify-start text-left font-normal">
+      <Button type="button" variant="outline" className="w-full justify-start text-left font-normal">
         <CalendarIcon className="mr-2 h-4 w-4" />
         {props.selectedDoctor && selectedDate && selectedTime ? format(selectedDate, 'PPP') + ' at ' + selectedTime : 'Book a Service'}
       </Button>
@@ -834,29 +842,68 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
               
       )
     
-      case FormFieldType.SELECT:
-        return (
-          <FormControl>
-            <Select 
-             onValueChange={(value) => {
-              field.onChange(value);
+     case FormFieldType.SALECT:
+      
+      return (
+        <FormControl>
+          <InlineExpandingSelect
+            options={props.options || []}
+            value={field.value}
+            onChange={(option) => {
+              field.onChange(option.value);
               if (props.onValueChange) {
-                props.onValueChange(value);
+                props.onValueChange(option.value);
               }
-            }} 
-            defaultValue={field.value}
-          >
-                          <FormControl>
-                <SelectTrigger className="shad-select-trigger">
-                  <SelectValue placeholder={props.placeholder} />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent className="shad-select-content">
-                {props.children}
-              </SelectContent>
-            </Select>
-          </FormControl>
-        );
+            }}
+            placeholder={props.placeholder || ''}
+          />
+        </FormControl>
+      );
+         
+    
+
+    // case FormFieldType.SELECT:
+    //   return (
+    //     <FormControl>
+    //       <Select 
+    //        onValueChange={(value) => {
+    //         field.onChange(value);
+    //         if (props.onValueChange) {
+    //           props.onValueChange(value);
+    //         }
+    //       }} 
+    //       defaultValue={field.value}
+    //     >
+    //                     <FormControl>
+    //           <SelectTrigger className="shad-select-trigger">
+    //             <SelectValue placeholder={props.placeholder} />
+    //           </SelectTrigger>
+    //         </FormControl>
+    //         <SelectContent className="shad-select-content">
+    //           {props.children}
+    //         </SelectContent>
+    //       </Select>
+    //     </FormControl>
+    //   );
+
+
+    case FormFieldType.SELECT:
+      return (
+        <FormControl>
+          <InlineExpandingSelect
+            options={props.options || []}
+            value={field.value}
+            onChange={(option) => {
+              field.onChange(option.value);
+              if (props.onValueChange) {
+                props.onValueChange(option.value);
+              }
+            }}
+            placeholder={props.placeholder || ''}
+          />
+        </FormControl>
+      );
+
           case FormFieldType.SKELETON:
             return props.renderSkeleton ? props.renderSkeleton(field) : null;
           default:

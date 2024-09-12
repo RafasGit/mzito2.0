@@ -8,6 +8,7 @@ import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
 import { createUser, registerPatient } from "@/lib/actions/patient.actions";
+import { initiatePayment } from "@/lib/actions/patient.actions";
 import { UserFormValidation } from "@/lib/validation";
 
 import "react-phone-number-input/style.css";
@@ -15,7 +16,7 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import Appointment from "@/app/patients/[userId]/new-appointment/page";
 import { updateAppointment, updateAppointmentWithIds } from "@/lib/actions/appointment.actions";
-
+import { toast } from "sonner";
 
 interface Appointment {
   schedule: string;
@@ -48,45 +49,56 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
 
   const onSubmit = async ({name, email, phone}: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
-
+    const appointmentId = appointment.$id    // You need to implement this function
+ 
     try {
       const client = {
-         name, email, phone        
+         name, 
+         email, 
+         phone, 
+         appointmentId    
       };
       console.log(client)
-      const patient = await registerPatient(client);
-      console.log({newClient: patient.$id})
-   // const newClientId = newClient.$id
-    const appointmentId = appointment.$id    // You need to implement this function
+      const newTransaction = await initiatePayment(client);
+      if (newTransaction) {
+        console.log(`Payment initiated, transaction_reference: ${newTransaction}`);
+        toast.success('Appointment successfully created!');
+      }
+  
     
-       console.log(`hi ${appointmentId}`)
-    if (!appointmentId) {
-      throw new Error('No appointment ID found');
-    }
-    
-    const appointmentToUpdate = {
-      appointmentId,
-      patient,
-    };
-    const updatedAppointment = await updateAppointmentWithIds(appointmentToUpdate);
-    console.log('Appointment updated:', updatedAppointment);
-
-    if (updatedAppointment) {
-      form.reset();
-      router.push(
-        `/patients/${appointmentId}/new-appointment/success?appointmentId=${updatedAppointment.$id}`
-      );
-    }
     } catch (error) {
       console.log(error);
+      toast.error('An error occurred while creating the appointment. Please try again.');
     }
 
     setIsLoading(false);
   };
+    
+   // const newClientId = newClient.$id
+    
+    //    console.log(`hi ${appointmentId}`)
+    // if (!appointmentId) {
+    //   throw new Error('No appointment ID found');
+    // }
+    
+    // const appointmentToUpdate = {
+    //   appointmentId,
+    //   patient,
+    // };
+    // const updatedAppointment = await updateAppointmentWithIds(appointmentToUpdate);
+    // console.log('Appointment updated:', updatedAppointment);
 
+    // if (updatedAppointment) {
+    // //  form.reset();
+    
+   
+    
+    //   router.push(
+    //     `/patients/${appointmentId}/new-appointment/success?appointmentId=${updatedAppointment.$id}`
+       
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
+    <Form  {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="  flex-1 space-y-6">
         <section className="mb-12 space-y-4">
           <h1 className="header">Hi there 👋</h1>
           <p className="text-dark-700">Get started with appointments.</p>

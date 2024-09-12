@@ -27,17 +27,34 @@ export const columns: ColumnDef<Appointment>[] = [
     },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    id: "actions",
+    header: () => <div className="pl-4">Actions</div>,
     cell: ({ row }) => {
       const appointment = row.original;
+
       return (
-        <div className="min-w-[115px]">
-          <StatusBadge status={appointment.status} />
+        <div className="flex gap-1">
+          <AppointmentModal
+            patientId={appointment.patient.$id}
+           // userId={appointment.userId}
+            appointment={appointment}
+            type="schedule"
+            title="Schedule Appointment"
+            description="Please confirm the following details to schedule."
+          />
+          <AppointmentModal
+            patientId={appointment.patient.$id}
+          //  userId={appointment.userId}
+            appointment={appointment}
+            type="cancel"
+            title="Cancel Appointment"
+            description="Are you sure you want to cancel your appointment?"
+          />
         </div>
       );
     },
   },
+  
   {
     accessorKey: "schedule",
     header: "Appointment",
@@ -75,29 +92,13 @@ export const columns: ColumnDef<Appointment>[] = [
     },
   },
   {
-    id: "actions",
-    header: () => <div className="pl-4">Actions</div>,
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => {
       const appointment = row.original;
-
       return (
-        <div className="flex gap-1">
-          <AppointmentModal
-            patientId={appointment.patient.$id}
-           // userId={appointment.userId}
-            appointment={appointment}
-            type="schedule"
-            title="Schedule Appointment"
-            description="Please confirm the following details to schedule."
-          />
-          <AppointmentModal
-            patientId={appointment.patient.$id}
-          //  userId={appointment.userId}
-            appointment={appointment}
-            type="cancel"
-            title="Cancel Appointment"
-            description="Are you sure you want to cancel your appointment?"
-          />
+        <div className="min-w-[115px]">
+          <StatusBadge status={appointment.status} />
         </div>
       );
     },

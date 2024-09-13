@@ -68,13 +68,21 @@ export const IdentificationTypes = [
      amount:"KES 1,000", 
      duration:"1hr"
    },
+   
  ];
 
  export const ServicesB = [
   {
+    image: "/assets/icons/IMG_2057.svg",
+    name: "Haircut, massage and black dye",
+    amount:"KES 1,000", 
+    duration:"1hr"
+  },
+  {
    image: "/assets/icons/IMG_2057.svg",
-   name: "Haircut with black dye" 
-
+   name: "Haircut with black dye" ,
+   amount:"KES 500", 
+   duration:"1hr"
  },
 ];
   

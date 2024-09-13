@@ -36,7 +36,7 @@ const InlineExpandingSelect: React.FC<InlineExpandingSelectProps> = ({ options, 
           className="cursor-pointer mt-4 flex items-center justify-between w-full p-2 bg-stone-900 border-b-4 border-b-stone-800 rounded-md shadow-sm focus:outline-none"
           onClick={handleToggle}
         >
-          <span>{selectedOption ? selectedOption.label : placeholder}</span>
+          <span className='text-lg'>{selectedOption ? selectedOption.label : placeholder}</span>
           {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </div>
         {isOpen && (
@@ -45,21 +45,21 @@ const InlineExpandingSelect: React.FC<InlineExpandingSelectProps> = ({ options, 
               <div
                 key={option.label}
                 onClick={() => handleSelect(option)}
-                className="flex items-center p-2 cursor-pointer hover:bg-stone-800"
+                className="flex items-center  p-2 cursor-pointer hover:bg-stone-800"
               >
                 <div className=" text-white p-4 rounded-lg w-[32rem] lg:w-[49rem] border-b-2 border-b-stone-800">
                    <div className="text-base mb-1 flex items-center">
                     
                      <Image
                       src={typeof option.image === 'string' ? option.image : option?.image || ''}
-                      height={100}
-                      width={100}
+                      height={120}
+                      width={120}
                       alt="Mzito SuperCuts"
-                      className="mb-0 h-10 w-fit bg-neutral-50 rounded-2xl"
+                      className="mb-0 h-12 w-fit bg-neutral-50 rounded-2xl"
                      />
-                     <span className="ml-4"> {option.label}</span>
+                     <span className="ml-4 text-lg"> {option.label}</span>
                    </div>
-                   <div className="flex items-center space-x-4 ml-16 ">
+                   <div className="flex items-center space-x-4 ml-20 ">
                      <div className="text-sm text-gray-400">{option?.duration}</div>
                      <div className="text-sm">{option?.amount}</div>
                    </div>

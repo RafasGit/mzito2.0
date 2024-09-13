@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import LoadingButton from "@/components/LoadingButton";
 import { Doctors } from "@/constants";
 import { getAppointment } from "@/lib/actions/appointment.actions";
 import { formatDateTime } from "@/lib/utils";
@@ -15,7 +15,7 @@ const RequestSuccess = async ({
     const appointment = await getAppointment(appointmentId);
   
     const doctor = Doctors.find(
-      (doctor) => doctor.name === appointment.primaryPhysician
+      (doctor) => doctor.name === appointment?.primaryPhysician
     );
   
     return (
@@ -34,12 +34,13 @@ const RequestSuccess = async ({
           <section className="flex flex-col items-center">
             <Image
               src="/assets/gifs/success.gif"
-              height={300}
-              width={280}
+              height={200}
+              width={200}
               alt="success"
+              unoptimized
             />
             <h2 className="header mb-6 max-w-[600px] text-center">
-              Your <span className="text-green-500">appointment request</span> has
+              Your <span className="text-[hsl(36,61%,58%)]">appointment request</span> has
               been successfully submitted!
             </h2>
             <p>We&apos;ll be in touch shortly to confirm.</p>
@@ -53,9 +54,8 @@ const RequestSuccess = async ({
                 alt="doctor"
                 width={100}
                 height={100}
-                className="size-6"
-              />
-              <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+                 className="mb-0 h-10 w-fit bg-neutral-50 rounded-2x"              />
+              <p className="whitespace-nowrap"> {doctor?.name}</p>
             </div>
             <div className="flex gap-2">
               <Image
@@ -64,17 +64,16 @@ const RequestSuccess = async ({
                 width={24}
                 alt="calendar"
               />
-              <p> {formatDateTime(appointment.schedule).dateTime}</p>
+              <p> {formatDateTime(appointment?.schedule).dateTime}</p>
             </div>
           </section>
   
-          <Button variant="outline" className="shad-primary-btn" asChild>
-            <Link href={`/patients/${userId}/new-appointment`}>
-              New Appointment
-            </Link>
-          </Button>
+          <LoadingButton href={`/patients/${userId}/new-appointment`}>
+          New Appointment
+        </LoadingButton>
+
   
-          <p className="copyright">© 2024 CarePluse</p>
+          <p className="copyright">© 2024 Mzito Supercuts</p>
         </div>
       </div>
     );

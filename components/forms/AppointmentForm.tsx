@@ -285,31 +285,7 @@ export const AppointmentForm = ({
             <div
               className={`flex flex-col gap-6  ${type === "create" && "xl:flex-col"}`}
             >
-               {/* <CustomFormField
-              fieldType={FormFieldType.SALECT}
-              control={form.control}
-              name="reason"
-              label="Choose service"
-              placeholder='Select a doctor'
-              >
-                 {ServicesA}
-              </CustomFormField> */}
-             
-               
-              {/* {Doctors.map((doctor, i) => (
-                <SelectItem key={doctor.name + i} value={doctor.name}>
-                  <div className="flex cursor-pointer items-center gap-2">
-                    <Image
-                      src={doctor.image}
-                      width={32}
-                      height={32}
-                      alt="doctor"
-                      className="rounded-full border border-dark-500"
-                    />
-                    <p>{doctor.name}</p>
-                  </div>
-                </SelectItem> */}
-        {/* /      ))} */}
+           
                 
         <CustomFormField
           fieldType={FormFieldType.SALECT}
@@ -331,15 +307,15 @@ export const AppointmentForm = ({
 
              
 
-              <CustomFormField
-                fieldType={FormFieldType.TEXTAREA}
-                control={form.control}
-                name="note"
-                label="Comments/notes"
-                placeholder='appointment reason'
-                disabled={type === "schedule"}
-              />
-            </div>
+          <CustomFormField
+            fieldType={FormFieldType.TEXTAREA}
+            control={form.control}
+            name="note"
+            label="Comments/notes"
+            placeholder='appointment reason'
+            disabled={type === "schedule"}
+          />
+        </div>
           </>
         )}
 

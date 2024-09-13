@@ -182,8 +182,15 @@
   }
 
   /* =====  SHADCN OVERRIDES */
+  .btn-skew {
+    position: relative;
+  }
+  
+  
+
   .shad-primary-btn {
-    @apply bg-green-500 text-white !important;
+    @apply bg-[hsl(36,61%,58%)] text-white border-none transition duration-300 ease-in-out
+               hover:bg-stone-800 hover:scale-105 !important;
   }
 
   .shad-danger-btn {

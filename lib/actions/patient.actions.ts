@@ -156,7 +156,7 @@ export const registerPatient = async ({
       },
       callback_details: {
         transaction_reference: transaction_reference,
-        callback_url: `${process.env.NEXT_PUBLIC_URL}/api/payment-callback`
+        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment-callback`
       },
       appointmentId: appointmentId,
     };

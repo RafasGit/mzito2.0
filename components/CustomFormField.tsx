@@ -38,7 +38,6 @@ import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 import { debounce } from 'lodash';
 import dayjs from 'dayjs'
 import TimeSlotGrid from "./timeslot";
-import CustomSelect from "./ui/custom-select";
 import { Doctors } from "@/constants";
 
 export enum FormFieldType {
@@ -569,25 +568,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       //           </SheetDescription>
       //         </SheetHeader>
       //         <SheetFooter className="mt-5">
-      //           <SheetClose asChild>
-      //             <div className="flex gap-2">
-      //               <Button variant="destructive" className=" shad-danger-btn w-24">
-      //                       Cancel
-      //                     </Button>
-          
-      //                     <Button className="shad-primary-btn w-24"
-      //                       //disabled={(date !(selectedTime && date) || date > new Date() }
-                          
-      //                     >
-      //                       Confirm
-      //                     </Button>
-      //                   </div>
-      //                 </SheetClose>
-      //               </SheetFooter>
-      //             </SheetContent>
-      //           </Sheet>
-      //         </div>
-            
+      // 
       // );
       case FormFieldType.DATE_PICKER:
 
@@ -641,12 +622,6 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
          fetchAppointments();
         }, []); // Empty dependency array ensures this runs only once on mount
 
-
-
-    //   console.log(appointments[0]); // Log the first appointment directly
-    // } else {
-    //   console.log('No appointments available');
-    // }
  
  
   const processAppointments = (response: AppointmentResponse | undefined) => {
@@ -729,21 +704,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
           field.onChange(date);
         }
       };
-    // const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(null);
-     // const [selectedDoctor, setSelectedDoctor] = useState<string | undefined | null>(props.selectedDoctor);
-
-      // useEffect(() => {
-      //   //setSelectedDoctor(props.selectedDoctor);
-      //   setSelectedDate(undefined);
-      //   setSelectedTime(undefined);
-      // }, [props.selectedDoctor]);
-      
-      // useEffect(() => {
-      //   setSelectedDate(undefined);
-      //   setSelectedTime(undefined);
-      // }, [selectedDoctor]);
-    
-     // console.log(`Daktari ${props.selectedDoctor}`)
+ 
 
       useEffect(() => {
         
@@ -800,7 +761,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
      
     <SheetTrigger asChild>
       
-      <Button type="button" variant="outline" className="w-full justify-start text-left font-normal">
+      <Button type="button" variant="outline" className="w-full justify-start text-left font-normal text-md">
         <CalendarIcon className="mr-2 h-4 w-4" />
         {props.selectedDoctor && selectedDate && selectedTime ? format(selectedDate, 'PPP') + ' at ' + selectedTime : 'Book a Service'}
       </Button>
@@ -817,7 +778,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
             mode="single"
             selected={selectedDate}
             onSelect={handleDateSelect}
-            className="rounded-md border"
+            className="rounded-md "
           />
         </div>
         {selectedDate && (
@@ -825,6 +786,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
             <TimeSlotGrid 
               timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
               onSelectTimeSlot={handleTimeSelect} 
+              selectedTime={selectedTime}
             />
           </div>
         )}
@@ -833,7 +795,11 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
  
       <SheetFooter>
         <SheetClose asChild>
-          <Button type="submit" disabled={!selectedDate || !selectedTime}>Confirm Booking</Button>
+          <Button  
+          type="submit" disabled={!selectedDate || !selectedTime}
+          className="border border-stone-800 rounded-lg hover:bg-[hsl(36,61%,58%)]">
+            Confirm Booking
+          </Button>
         </SheetClose>
       </SheetFooter>
     </SheetContent>

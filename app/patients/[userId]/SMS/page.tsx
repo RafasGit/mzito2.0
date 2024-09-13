@@ -1,17 +1,17 @@
 'use client'
 import React, { useState } from 'react';
-import useSmsSender from '@/lib/useSmsSender';
+//import useSmsSender from '@/lib/useSmsSender';
 
 
 const SmsSenderComponent: React.FC = () => {
   const [to, setTo] = useState('');
   const [message, setMessage] = useState('');
   const [from, setFrom] = useState('CONNECT'); // Optional, default value
-  const [isLoading, error, sendSMS] = useSmsSender({ to, from, message });
+ // const [isLoading, error, sendSMS] = useSmsSender({ to, from, message });
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await sendSMS();
+    //await sendSMS();
   };
 
   return (
@@ -36,9 +36,9 @@ const SmsSenderComponent: React.FC = () => {
           onChange={(e) => setMessage(e.target.value)} 
           required 
         />
-        <button type="submit" disabled={isLoading}>Send SMS</button>
+        {/* <button type="submit" disabled={isLoading}>Send SMS</button> */}
       </form>
-      {error && <p>Error sending SMS: {error.message}</p>}
+      {/* {error && <p>Error sending SMS: {error.message}</p>} */}
     </div>
   );
 };

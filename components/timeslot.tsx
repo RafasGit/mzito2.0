@@ -11,9 +11,10 @@ interface TimeSlot {
 interface TimeSlotGridProps {
     timeSlots: TimeSlot[];
     onSelectTimeSlot: (time: string) => void;
+    selectedTime?: string;
   }
 
-  const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({ timeSlots, onSelectTimeSlot }) => {
+  const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({ timeSlots, onSelectTimeSlot, selectedTime }) => {
     const isSlotDisabled = (index: number): boolean => {
       if (timeSlots[index].isBooked) return true;
       if (index > 0 && timeSlots[index - 1].isBooked) return true;
@@ -30,9 +31,12 @@ interface TimeSlotGridProps {
             onClick={() => onSelectTimeSlot(slot.time)}
             disabled={isSlotDisabled(index)}
             variant="outline"
-            className={`w-full py-2 ${
-              isSlotDisabled(index) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-black hover:text-white'
-            }`}
+            className={`w-full  rounded-xl border-neutral-700 ${
+              isSlotDisabled(index) ? 'opacity-0 cursor-not-allowed' :
+              slot.time === selectedTime
+                ? 'bg-[hsl(36,61%,58%)] text-black' :
+              'hover:bg-neutral-700 hover:text-white'
+            } `}
           >
             {slot.time}
           </Button>

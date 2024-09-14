@@ -320,7 +320,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       
       const handleTimeSelect = (time: string) => {
         setSelectedTime(time);
-        console.log(`time ${selectedTime}`)
+      //  console.log(`time ${selectedTime}`)
       
         if (selectedDate && time) {
           const dateObject = new Date(selectedDate);

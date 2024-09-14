@@ -58,7 +58,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
          phone, 
          appointmentId    
       };
-      console.log(client)
+     // console.log(client)
       const newTransaction = await initiatePayment(client);
       if (newTransaction) {
         console.log(`Payment initiated, transaction_reference: ${newTransaction}`);
@@ -78,28 +78,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
     setIsLoading(false);
   };
     
-   // const newClientId = newClient.$id
-    
-    //    console.log(`hi ${appointmentId}`)
-    // if (!appointmentId) {
-    //   throw new Error('No appointment ID found');
-    // }
-    
-    // const appointmentToUpdate = {
-    //   appointmentId,
-    //   patient,
-    // };
-    // const updatedAppointment = await updateAppointmentWithIds(appointmentToUpdate);
-    // console.log('Appointment updated:', updatedAppointment);
-
-    // if (updatedAppointment) {
-    // //  form.reset();
-    
-   
-    
-    //   router.push(
-    //     `/patients/${appointmentId}/new-appointment/success?appointmentId=${updatedAppointment.$id}`
-       
+ 
   return (
     <Form  {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="  flex-1 space-y-6">

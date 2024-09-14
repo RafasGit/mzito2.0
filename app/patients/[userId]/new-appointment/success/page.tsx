@@ -54,7 +54,7 @@ const RequestSuccess = async ({
                 alt="doctor"
                 width={100}
                 height={100}
-                 className="mb-0 h-10 w-fit bg-neutral-50 rounded-2x"              />
+                 className="mb-0 h-10 w-fit bg-neutral-50 "/>
               <p className="whitespace-nowrap"> {doctor?.name}</p>
             </div>
             <div className="flex gap-2">

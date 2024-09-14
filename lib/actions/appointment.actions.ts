@@ -179,7 +179,7 @@ export const updateAppointment = async ({
     if (updatedAppointment) {
       const appt : Appointment = await getAppointment(updatedAppointment.$id)
       const client : Patient = appt.patient
-      console.log(client)
+      //console.log(client)
       const handleSendSms = async () => {
         const result = await sendSmsServer({
           to: client.phone,

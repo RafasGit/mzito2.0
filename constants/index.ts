@@ -54,10 +54,7 @@ export const IdentificationTypes = [
       image: "/assets/icons/IMG_2057.svg",
       name: "Chair three: Jeff",
     },
-    {
-      image: "/assets/images/dr-livingston.png",
-      name: "David Livingston",
-    },
+  
   ];
 
 

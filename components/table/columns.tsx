@@ -23,7 +23,7 @@ export const columns: ColumnDef<Appointment>[] = [
     header: "Patient",
     cell: ({ row }) => {
       const appointment = row.original;
-      return <p className="text-14-medium ">{appointment.patient.name}</p>;
+      return <p className="text-14-medium ">{appointment?.patient?.name}</p>;
     },
   },
   {
@@ -35,7 +35,7 @@ export const columns: ColumnDef<Appointment>[] = [
       return (
         <div className="flex gap-1">
           <AppointmentModal
-            patientId={appointment.patient.$id}
+            patientId={appointment?.patient?.$id}
            // userId={appointment.userId}
             appointment={appointment}
             type="schedule"
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Appointment>[] = [
             description="Please confirm the following details to schedule."
           />
           <AppointmentModal
-            patientId={appointment.patient.$id}
+            patientId={appointment?.patient?.$id}
           //  userId={appointment.userId}
             appointment={appointment}
             type="cancel"
@@ -62,7 +62,7 @@ export const columns: ColumnDef<Appointment>[] = [
       const appointment = row.original;
       return (
         <p className="text-14-regular min-w-[100px]">
-          {formatDateTime(appointment.schedule).dateTime}
+          {formatDateTime(appointment?.schedule).dateTime}
         </p>
       );
     },
@@ -84,9 +84,9 @@ export const columns: ColumnDef<Appointment>[] = [
             alt="doctor"
             width={100}
             height={100}
-            className="size-8"
-          />
-          <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
+            className="size-10  bg-neutral-50 rounded-2xl"
+/>
+          <p className="whitespace-nowrap"> {doctor?.name}</p>
         </div>
       );
     },
@@ -98,7 +98,7 @@ export const columns: ColumnDef<Appointment>[] = [
       const appointment = row.original;
       return (
         <div className="min-w-[115px]">
-          <StatusBadge status={appointment.status} />
+          <StatusBadge status={appointment?.status} />
         </div>
       );
     },

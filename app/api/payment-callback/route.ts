@@ -50,26 +50,22 @@ import { sendSmsServer } from "@/lib/useSmsSender";
       
        const updatedAppointment : Appointment = await updateAppointmentWithIds(appointmentToUpdate);  // Assuming you update the appointment successfully
            console.log(updatedAppointment)
-       if(updatedAppointment) {
-        // const smsDetails = {
-        //   to: '254111799290',
-        //   message: 'Your appointment has been confirmed!',
-        //   from: 'TIARACONECT'
-        // };
-         
-        // //SEND SMS        
-        //    useSmsSender(smsDetails);
+     
+           if(updatedAppointment) {
         const handleSendSms = async () => {
           const result = await sendSmsServer({
             to: '+254111799290',
             message: `${client.name}, your booking for ${formatDateTime(updatedAppointment?.schedule).dateTime} successfully confirmed! `
+           
           });
         }
-        
-           handleSendSms()
-        
+  
+        handleSendSms()
+       }
 
-              // Build the redirect URL
+        
+        
+           // Build the redirect URL
        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
        const redirectUrl = `${baseUrl}/patients/${appointmentToUpdate.appointmentId}/new-appointment/success?appointmentId=${appointmentToUpdate.appointmentId}`;
  
@@ -78,7 +74,27 @@ import { sendSmsServer } from "@/lib/useSmsSender";
        }
      
  
-     } else {
+  else {
+      //Uncomment 
+      const transaction: Transaction = await databases.getDocument(
+        DATABASE_ID!,
+        TRANSACTION_COLLECTION_ID!,
+        transaction_reference
+      );
+
+      if (!transaction) {
+        throw new Error('Transaction not found');
+      }
+      const handleSendSms = async () => {
+
+
+        const result = await sendSmsServer({
+          to: transaction.phone,
+          message: `${transaction.name}, appointment not confirmed. Please ensure you complete payment or try again.`
+        });
+      }
+
+         handleSendSms()
        return NextResponse.json({ status: 'failure', message: 'Payment failed.' });
      }
    } catch (error) {

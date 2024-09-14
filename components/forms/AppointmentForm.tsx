@@ -8,8 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Option from "../ui/option";
 import { SelectItem } from "@/components/ui/select";
-import { Doctors } from "@/constants";
-import { ServicesA } from "@/constants";
+import { Doctors, ServicesA, ServicesB } from "@/constants";
 
 import {
   createAppointment,
@@ -46,7 +45,7 @@ export const AppointmentForm = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-
+  const appointmentSchedule = appointment ? new Date(appointment.schedule) : null;
   const AppointmentFormValidation = getAppointmentSchema(type);
  
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -193,6 +192,8 @@ export const AppointmentForm = ({
               label="Expected appointment date"
               dateFormat="MM/dd/yyyy  -  h:mm aa"
               selectedDoctor={selectedDoctor}
+              type={type}
+              apptValue={appointmentSchedule}
             />
 
             <div
@@ -206,13 +207,23 @@ export const AppointmentForm = ({
               name="reason"
               label="Choose service"
               placeholder="Select a service"
-              options={ServicesA.map((service, i) => ({
+              options={selectedDoctor!=='Chair three: Jeff' ? ServicesA.map((service, i) => ({
                 value: service.name,
                 label: service.name,
                 image: service.image,
                 duration: service.duration,
                 amount: service.amount
-              }))}
+             
+              })) :
+              ServicesB.map((service, i) => ({
+                value: service.name,
+                label: service.name,
+                image: service.image,
+                duration: service.duration,
+                amount: service.amount
+              }))
+
+            }
             // onValueChange={handleDoctorChange}
             />
 

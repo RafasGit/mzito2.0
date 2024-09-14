@@ -15,12 +15,12 @@ const Home = ({searchParams}: SearchParamProps) => {
 
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px]">
-          <Image
-            src="/assets/icons/logo2.svg"
-            height={1500}
-            width={1500}
-            alt="patient"
-            className="mb-12 h-10 w-fit bg-stone-400"
+        <Image
+            src='/assets/icons/Edu mzito(3).png'
+             height={200}
+             width={200}
+            alt="logo"
+            className="mb-12 bg-transparent"
           />
          <AppointmentForm
            type="create"
@@ -31,9 +31,9 @@ const Home = ({searchParams}: SearchParamProps) => {
 
           <div className="text-14-regular mt-20 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
-              © 2024 CarePluse
+              © 2024 Mzito SuperCuts
             </p>
-            <Link href="/?admin=true" className="text-green-500">
+            <Link href="/?admin=true" className="text-[hsl(36,61%,58%)]">
               Admin
             </Link>
           </div>
@@ -41,7 +41,7 @@ const Home = ({searchParams}: SearchParamProps) => {
       </section>
 
       <Image
-        src="/assets/images/onboarding-img.png"
+        src="/assets/images/mzito.png"
         height={1000}
         width={1000}
         alt="patient"

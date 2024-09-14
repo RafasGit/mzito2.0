@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { ID, Query } from "node-appwrite";
 
-import { Appointment } from "@/types/appwrite.types";
+import { Appointment, Patient } from "@/types/appwrite.types";
+import { sendSmsServer } from "../useSmsSender";
 
 
 import twilio from 'twilio';
@@ -189,15 +190,30 @@ export const updateAppointment = async ({
       appointmentId,
       appointment
     );
+  
+   // Uncomment
+    if (updatedAppointment) {
+      const appt : Appointment = await getAppointment(updatedAppointment.$id)
+      const client : Patient = appt.patient
+      console.log(client)
+      const handleSendSms = async () => {
+        const result = await sendSmsServer({
+          to: client.phone,
+          
+          message: `Greetings from Mzito SuperCuts. ${type === "schedule" ? `Your appointment with ${appt.primaryPhysician} for ${formatDateTime(appt.schedule!,).dateTime} will start soon `
+      : `We regret to inform that your appointment for ${formatDateTime(appt.schedule!, ).dateTime} is cancelled. Reason:  ${appt.cancellationReason}`}.`,
+
+
+        });
+      }
+
+      handleSendSms()
+     }
 
     if (!updatedAppointment) throw Error;
-   
-  //  const from = 'whatsapp:+14155238886'
-  //   const to = 'whatsapp:+254111799290'
-    const smsMessage = 
-       `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!,).dateTime} with Dr. ${appointment.primaryPhysician}`
-      : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, ).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
-   // await sendSMSNotification(userId, smsMessage );
+
+
+  
 
     revalidatePath("/admin");
     return parseStringify(updatedAppointment);

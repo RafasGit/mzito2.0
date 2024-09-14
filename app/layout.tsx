@@ -13,12 +13,11 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "CarePulse",
+  title: "Mzito Supercuts",
   description:
     "A customer management system designed to streamline client registration, appointment scheduling, and records management for service providers.",
   icons: {
-    icon: "/assets/icons/logo-icon.svg",
-  },
+    icon: "/assets/icons/Edu mzito(3).svg",  },
 };
 
 export default function RootLayout({

@@ -7,7 +7,6 @@ import { Appointment, Patient } from "@/types/appwrite.types";
 import { sendSmsServer } from "../useSmsSender";
 
 
-import twilio from 'twilio';
 
 import {
   APPOINTMENT_COLLECTION_ID,
@@ -118,26 +117,11 @@ export const sendSMSNotification = async (userId: string, content: string) => {
   // } catch (error) {
   //   console.error("An error occurred while sending sms:", error);
   // }
-  const accountSid = <string>process.env.TWILIO_ACCOUNT_SID;
-  const token = <string>process.env.TWILIO_AUTH_TOKEN;
-  const client = twilio(accountSid, token);
-  const  phone = '+254111799290'
+  
   // const message ;
   // console.log(phone, message);
   
-    try{  
-    await client.messages
-  .create({
-      body: content,
-      from: '+18327722398',
-      to: phone,
-    })
-  }
-  catch (error) {
-    console.error(
-      'try again'
-    )
-  }
+   
   
 };
 

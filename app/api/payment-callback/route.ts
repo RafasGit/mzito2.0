@@ -54,7 +54,7 @@ import { sendSmsServer } from "@/lib/useSmsSender";
            if(updatedAppointment) {
         const handleSendSms = async () => {
           const result = await sendSmsServer({
-            to: '+254111799290',
+            to: client.phone,
             message: `${client.name}, your booking for ${formatDateTime(updatedAppointment?.schedule).dateTime} successfully confirmed! `
            
           });

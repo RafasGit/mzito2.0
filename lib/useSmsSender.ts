@@ -21,7 +21,7 @@ interface SmsResponse {
 const API_KEY = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0MzciLCJvaWQiOjQzNywidWlkIjoiY2Y5YTVhMzQtZTY5Zi00ZWRhLWEzMDctODgxNGY3ZDk4Mjk1IiwiYXBpZCI6MzcyLCJpYXQiOjE3MjQ5MjM1NzUsImV4cCI6MjA2NDkyMzU3NX0.WvQhx_CxAAErh6VopJFuk59IHSDGTnIDUPFWAAMNkFcLCGSsjJX1aoLoZ23Ytw9IoQrJgVvmW1XGd5hw9mUtrw';
 const API_ENDPOINT = 'https://api2.tiaraconnect.io/api/messaging/sendsms';
 
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 1;
 const RETRY_DELAY = 2000; // 1 second
 
 async function delay(ms: number): Promise<void> {
@@ -45,7 +45,7 @@ async function sendSmsRequest({ to, from, message }: SmsSenderProps): Promise<Sm
   return await response.json();
 }
 
-export async function sendSmsServer({ to, from = 'TIARACONECT', message }: SmsSenderProps): Promise<NextResponse> {
+export async function sendSmsServer({ to, from = 'SUPERCUTS', message }: SmsSenderProps): Promise<NextResponse> {
   let attempts = 0;
   let lastError: Error | null = null;
 

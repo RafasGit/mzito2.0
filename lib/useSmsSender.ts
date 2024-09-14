@@ -45,7 +45,7 @@ async function sendSmsRequest({ to, from, message }: SmsSenderProps): Promise<Sm
   return await response.json();
 }
 
-export async function sendSmsServer({ to, from = 'SUPERCUTS', message }: SmsSenderProps): Promise<NextResponse> {
+export async function sendSmsServer({ to, from = 'TIARACONECT', message }: SmsSenderProps): Promise<NextResponse> {
   let attempts = 0;
   let lastError: Error | null = null;
 

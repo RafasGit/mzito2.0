@@ -243,7 +243,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         setAppointments(documents); 
 
     }
-    console.log(appointments)
+      //  console.log(appointments)
         
       const fetchAppointments = async () => {
             try {

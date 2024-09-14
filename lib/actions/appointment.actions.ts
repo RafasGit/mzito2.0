@@ -222,4 +222,4 @@ export const getAppointment = async (appointmentId: string) => {
       error
     );
   }
-};
+}; 

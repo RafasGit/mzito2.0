@@ -28,7 +28,7 @@ import {
         undefined,
         user.name
       )
-      console.log({newUser})
+    //  console.log({newUser})
       return parseStringify(newUser);
       
     } catch (error: any) {
@@ -60,7 +60,7 @@ export const getUser = async (userId: string) => {
   //66cc975c0011c129780c  66cc8ea7001cee116f48  66cc8dc10012e97c462f
     // GET PATIENT
 export const getPatient = async (userId: string) => {
-  console.log(`Patient id:`, userId);
+  //console.log(`Patient id:`, userId);
 
   try {
     const patients = await databases.listDocuments(
@@ -129,9 +129,9 @@ export const registerPatient = async ({
     //   status: 'pending', // Payment status starts as pending
 
     // });
-    console.log(`user name ${name}`)
-    console.log(`user name ${phone}`)
-    console.log(`user name ${appointmentId}`)
+  //  console.log(`user name ${name}`)
+  //  console.log(`user name ${phone}`)
+  //  console.log(`user name ${appointmentId}`)
   
     const requestBody = {
       customer_details: {

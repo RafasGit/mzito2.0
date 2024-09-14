@@ -18,8 +18,8 @@ interface SmsResponse {
   cost: string;
 }
 
-const API_KEY = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0MzciLCJvaWQiOjQzNywidWlkIjoiY2Y5YTVhMzQtZTY5Zi00ZWRhLWEzMDctODgxNGY3ZDk4Mjk1IiwiYXBpZCI6MzcyLCJpYXQiOjE3MjQ5MjM1NzUsImV4cCI6MjA2NDkyMzU3NX0.WvQhx_CxAAErh6VopJFuk59IHSDGTnIDUPFWAAMNkFcLCGSsjJX1aoLoZ23Ytw9IoQrJgVvmW1XGd5hw9mUtrw';
-const API_ENDPOINT = 'https://api2.tiaraconnect.io/api/messaging/sendsms';
+const API_KEY = process.env.NEXT_PUBLIC_SMS_API_KEY!;
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT!;
 
 const MAX_RETRIES = 1;
 const RETRY_DELAY = 2000; // 1 second

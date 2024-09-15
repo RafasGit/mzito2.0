@@ -19,11 +19,13 @@ interface SmsResponse {
 }
 
 const API_KEY = process.env.NEXT_PUBLIC_SMS_API_KEY!;
-const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT!;
+const API_ENDPOINT = process.env.NEXT_PUBLIC_SMS_ENDPOINT!;
 
 const MAX_RETRIES = 1;
 const RETRY_DELAY = 2000; // 1 second
 
+console.log(API_KEY)
+console.log(API_ENDPOINT)
 async function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

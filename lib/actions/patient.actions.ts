@@ -102,7 +102,7 @@ export const registerPatient = async ({
           ...patient,
         }
       );
-      console.log({newPatient})
+    //  console.log({newPatient})
 
 
       return parseStringify(newPatient);
@@ -119,7 +119,7 @@ export const registerPatient = async ({
   export const initiatePayment = async ({name, email, phone, appointmentId}: PaymentParams) => {
     const api_key = process.env.NEXT_PUBLIC_API_KEY!;
     const transaction_reference = `txn_${new Date().getTime()}_${Math.random().toString(36).substring(7)}`; // Unique reference
-  
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL!
     // // Store the transaction reference and patient data
     // await databases.createDocument(DATABASE_ID!, TRANSACTION_COLLECTION_ID!, transaction_reference, {
     //   //patient, // Store patient data directlyn
@@ -129,7 +129,9 @@ export const registerPatient = async ({
     //   status: 'pending', // Payment status starts as pending
 
     // });
-  //  console.log(`user name ${name}`)
+
+    ///console.log(`user ${process.env.NEXT_PUBLIC_APP_URL}`)
+    console.log(`user name ${api_key}`)
   //  console.log(`user name ${phone}`)
   //  console.log(`user name ${appointmentId}`)
   
@@ -156,7 +158,7 @@ export const registerPatient = async ({
       },
       callback_details: {
         transaction_reference: transaction_reference,
-        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment-callback`
+        callback_url: `${baseUrl}/api/payment-callback`
       },
       appointmentId: appointmentId,
     };

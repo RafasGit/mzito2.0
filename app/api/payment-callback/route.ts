@@ -6,7 +6,7 @@ import {
 import { sendSmsServer } from "@/lib/useSmsSender";
  import { Appointment, Transaction } from "@/types/appwrite.types";
  import { formatDateTime } from "@/lib/utils";
- import { NextResponse } from "next/server";
+ import { NextResponse, NextRequest } from "next/server";
  
  export async function POST(request: Request) {
    try {
@@ -66,7 +66,7 @@ import { sendSmsServer } from "@/lib/useSmsSender";
         
         
            // Build the redirect URL
-       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+       const baseUrl = process.env.NEXT_PUBLIC_APP_URL! ;
        const redirectUrl = `${baseUrl}/patients/${appointmentToUpdate.appointmentId}/new-appointment/success?appointmentId=${appointmentToUpdate.appointmentId}`;
  
        // Redirect to the success page

@@ -1,0 +1,7 @@
+{
+    "functions": {
+      "api/payment-callback.js": {
+        "maxDuration": 50
+      }
+    }
+  }

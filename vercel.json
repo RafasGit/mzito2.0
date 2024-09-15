@@ -2,6 +2,10 @@
     "functions": {
       "app/api/payment-callback/route.ts": {
         "maxDuration": 60
+      },
+      "app/api/sendSms/route.ts": {
+        "maxDuration": 30
       }
     }
-  }
+    }
+  

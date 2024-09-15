@@ -12,9 +12,9 @@ const Appointment = async ({ params: { userId } }: SearchParamProps) => {
   console.log('hi')
 
   return (
-    <div className="overflow-hidden flex h-screen max-h-screen">
-      <section className=" overflow-hidden remove-scrollbar container my-auto">
-        <div className=" overflow-hidden sub-container max-w-[860px] flex-1 justify-between">
+    <div className="flex h-screen max-h-screen">
+      <section className="remove-scrollbar container my-auto">
+        <div className="sub-container max-w-[860px] flex-1 justify-between">
         <Image
             src='/assets/icons/Edu mzito(3).png'
              height={200}

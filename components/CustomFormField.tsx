@@ -388,7 +388,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
     </SheetTrigger>
     <SheetContent className="sm:max-w-[425px]">
       <SheetHeader>
-         <SheetDescription className="mt-10">Select Date and Time slot to book a service</SheetDescription> 
+         <SheetDescription className="mt-1">Select Date and Time slot to book a service</SheetDescription> 
       </SheetHeader>
       <FormControl>     
         <div className="grid gap-4 py-4">

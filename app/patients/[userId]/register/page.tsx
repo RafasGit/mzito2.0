@@ -14,16 +14,16 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
   //if (patient) redirect(`/patients/${userId}/new-appointment`);
 
   return (
-    <div className="flex h-fit max-h-screen">
+    <div className="flex flex-col md:flex-row h-max max-h-screen">
       <section className="remove-scrollbar container">
-        <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
+        <div className="sub-container max-w-[860px] flex-1 flex-col py-10 w-full">
         <Image
-            src='/assets/icons/Edu mzito(3).png'
-             height={200}
-             width={200}
-            alt="logo"
-            className="mb-12 bg-transparent"
-          />
+          src='/assets/icons/Edu mzito(3).png'
+          height={200}
+          width={200}
+          alt="logo"
+          className="mb-12 bg-transparent w-full max-w-[200px]" // Added w-full and max-w
+        />
 
         <PatientForm appointment={appointment} />
 
@@ -31,13 +31,13 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
         </div>
       </section>
 
-      <Image
-        src="/assets/images/register-img.png"
-        height={1000}
-        width={1000}
-        alt="patient"
-        className="side-img max-w-[390px]"
-      />
+        <Image
+          src="/assets/images/register-img.png"
+          height={1000}
+          width={1000}
+          alt="patient"
+          className="side-img w-full max-w-[390px]" // Added w-full and max-w
+        />
     </div>
   );
 };

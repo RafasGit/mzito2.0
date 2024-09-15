@@ -400,7 +400,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
           />
         </div>
         {selectedDate && (
-          <div className="grid gap-2">
+          <div className="grid gap-2 sm: mt-[-26px] ml-[-14px] mr-4">
             <TimeSlotGrid 
               timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
               onSelectTimeSlot={handleTimeSelect} 
@@ -415,7 +415,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         <SheetClose asChild>
           <Button  
           type="submit" disabled={!selectedDate || !selectedTime}
-          className="border border-stone-800 rounded-lg hover:bg-[hsl(36,61%,58%)]">
+          className="border border-stone-800 rounded-lg hover:bg-[hsl(36,61%,58%)] sm: mt-[-4px] ml-[-4px]">
             Confirm Booking
           </Button>
         </SheetClose>

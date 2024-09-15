@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/payment-callback.js": {
+      "api/payment-callback.ts": {
         "maxDuration": 50
       }
     }

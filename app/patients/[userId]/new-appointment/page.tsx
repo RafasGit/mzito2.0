@@ -12,7 +12,7 @@ const Appointment = async ({ params: { userId } }: SearchParamProps) => {
   console.log('hi')
 
   return (
-    <div className="flex h-screen max-h-screen">
+    <div className="overflow-hidden flex h-screen max-h-screen">
       <section className=" overflow-hidden remove-scrollbar container my-auto">
         <div className=" overflow-hidden sub-container max-w-[860px] flex-1 justify-between">
         <Image

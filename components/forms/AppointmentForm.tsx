@@ -148,7 +148,7 @@ export const AppointmentForm = ({
      
           <form onSubmit={form.handleSubmit(onSubmit)}
            style={{ backgroundImage: `url('/assets/images/footer-bg.png')` }}
-          className=" border-transparent p-6 bg-stone-900  flex-1 space-y-6  z-50 rounded-3xl">
+          className=" overflow-hidden border-transparent p-6 bg-stone-900  flex-1 space-y-6  z-50 rounded-3xl">
 
 
 

@@ -388,12 +388,12 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
     </SheetTrigger>
     <SheetContent className="sm:max-w-[425px]">
       <SheetHeader>
-        <SheetTitle>Book a Service</SheetTitle>
-        <SheetDescription>Select Date and Time slot to book a service</SheetDescription>
+        <SheetTitle>Select Date and Time slot to book a service</SheetTitle>
+        <SheetDescription></SheetDescription>
       </SheetHeader>
       <FormControl>     
         <div className="grid gap-4 py-4">
-        <div className="grid gap-2 sm: ml-[-26px]">
+        <div className="grid gap-2 ml-[-26px] mt-[-30px] sm:ml-0mt-0">
           <Calendar
             mode="single"
             selected={selectedDate}
@@ -407,7 +407,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
           />
         </div>
         {selectedDate && (
-          <div className="grid gap-2 sm: mt-[-26px] ml-[-14px] mr-4">
+          <div className="grid gap-2 sm:mt-0 mt-[-32px] ml-[-14px] mr-4">
             <TimeSlotGrid 
               timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
               onSelectTimeSlot={handleTimeSelect} 

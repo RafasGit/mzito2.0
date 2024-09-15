@@ -22,7 +22,7 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
           height={200}
           width={200}
           alt="logo"
-          className="mb-12 bg-transparent w-full max-w-[200px]" // Added w-full and max-w
+          className="mb-12 ml-8 sm:ml-6 bg-transparent w-full max-w-[200px]" // Added w-full and max-w
         />
 
         <PatientForm appointment={appointment} />

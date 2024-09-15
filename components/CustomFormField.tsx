@@ -389,7 +389,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
     <SheetContent className="sm:max-w-[425px]">
       <SheetHeader>
         <SheetTitle>Select Date and Time slot to book a service</SheetTitle>
-        <SheetDescription></SheetDescription>
+        {/* <SheetDescription></SheetDescription> */}
       </SheetHeader>
       <FormControl>     
         <div className="grid gap-4 py-4">
@@ -420,11 +420,11 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
  
       <SheetFooter>
         <SheetClose asChild>
-          <Button  
+          {/* <Button  
           type="submit" disabled={!selectedDate || !selectedTime}
           className="border border-stone-800 rounded-lg hover:bg-[hsl(36,61%,58%)] sm: mt-[-4px] ml-[-4px]">
             Confirm Booking
-          </Button>
+          </Button> */}
         </SheetClose>
       </SheetFooter>
     </SheetContent>

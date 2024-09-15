@@ -323,6 +323,9 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       //  console.log(`time ${selectedTime}`)
       
         if (selectedDate && time) {
+        
+            setIsSheetOpen(false);   
+        
           const dateObject = new Date(selectedDate);
           const [timeString, period] = time.split(' ');
           let [hours, minutes] = timeString.split(':').map(Number);
@@ -355,9 +358,13 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
         };
       }) : [];
 
+      const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+     
+
       return (
       
-    <Sheet>
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
      
     <SheetTrigger asChild>
       

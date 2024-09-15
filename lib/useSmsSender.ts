@@ -21,7 +21,7 @@ interface SmsResponse {
 const API_KEY = process.env.NEXT_PUBLIC_SMS_API_KEY!;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_SMS_ENDPOINT!;
 
-const MAX_RETRIES = 1;
+const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 1 second
 
 console.log(API_KEY)

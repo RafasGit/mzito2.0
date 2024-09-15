@@ -386,7 +386,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       </SheetHeader>
       <FormControl>     
         <div className="grid gap-4 py-4">
-        <div className="grid gap-2">
+        <div className="grid gap-2 sm: ml-[-26px]">
           <Calendar
             mode="single"
             selected={selectedDate}

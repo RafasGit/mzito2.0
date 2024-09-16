@@ -23,7 +23,7 @@ import {
       // Create new user -> https://appwrite.io/docs/references/1.5.x/server-nodejs/users#create
       const newUser = await users.create(
         ID.unique(),
-        user.email,
+       // user.email,
         user.phone,
         undefined,
         user.name
@@ -35,7 +35,7 @@ import {
       // Check existing user
       if (error && error?.code === 409) {
         const existingUser = await users.list([
-          Query.equal("email", [user.email]),
+          //Query.equal("email", [user.email]),
         ]);
   
         return existingUser.users[0];
@@ -116,7 +116,7 @@ export const registerPatient = async ({
 
   //Payment & checkout
  
-  export const initiatePayment = async ({name, email, phone, appointmentId}: PaymentParams) => {
+  export const initiatePayment = async ({name, phone, appointmentId}: PaymentParams) => {
     const api_key = process.env.NEXT_PUBLIC_API_KEY!;
     const transaction_reference = `txn_${new Date().getTime()}_${Math.random().toString(36).substring(7)}`; // Unique reference
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL!

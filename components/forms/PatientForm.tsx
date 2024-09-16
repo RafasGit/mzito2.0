@@ -97,7 +97,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
           iconAlt="user"
         />
 
-        <CustomFormField
+        {/* <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
           name="email"
@@ -105,7 +105,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
           placeholder="johndoe@gmail.com"
           iconSrc="/assets/icons/email.svg"
           iconAlt="email"
-        />
+        /> */}
 
         <CustomFormField
           fieldType={FormFieldType.PHONE_INPUT}

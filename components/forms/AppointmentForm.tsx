@@ -170,7 +170,7 @@ export const AppointmentForm = ({
               control={form.control}
               name="primaryPhysician"
               label="Doctor"
-              placeholder="Select a doctor"
+              placeholder="Select a chair"
               options={Doctors.map((doctor, i) => ({
                 value: doctor.name,
                 label: doctor.name,
@@ -220,7 +220,7 @@ export const AppointmentForm = ({
               }))
 
             }
-            // onValueChange={handleDoctorChange}
+            
             />
 
           
@@ -232,7 +232,7 @@ export const AppointmentForm = ({
                 control={form.control}
                 name="note"
                 label="Comments/notes"
-                placeholder='appointment reason'
+                placeholder='appointment comments'
                 disabled={type === "schedule"}
               />
             </div>

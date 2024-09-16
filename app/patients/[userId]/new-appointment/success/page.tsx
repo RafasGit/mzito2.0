@@ -43,7 +43,7 @@ const RequestSuccess = async ({
               Your <span className="text-[hsl(36,61%,58%)]">appointment request</span> has
               been successfully submitted!
             </h2>
-            <p>Ensure you complete payment and We&apos;ll be in touch to confirm your appointment.</p>
+            <p className="text-base sm:text-xl">Ensure you complete payment and we&apos;ll be in touch to confirm your appointment.</p>
           </section>
   
           <section className="request-details">

@@ -19,7 +19,7 @@ const RequestSuccess = async ({
     );
   
     return (
-      <div className=" flex h-screen max-h-svh sm:max-h-screen px-[5%]">
+      <div className=" flex h-svh max-h-svh sm:max-h-screen px-[5%]">
         <div className="success-img">
           <Link href="/">
           <Image

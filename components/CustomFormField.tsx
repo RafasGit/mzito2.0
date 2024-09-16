@@ -406,7 +406,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
           />
         </div>
         {selectedDate && (
-          <div className="grid gap-2 sm:mt-0 mt-[-32px] ml-[-14px] mr-4">
+          <div className="grid gap-2 sm:mt-0 mt-[-28px] ml-[-14px] mr-4">
             <TimeSlotGrid 
               timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
               onSelectTimeSlot={handleTimeSelect} 

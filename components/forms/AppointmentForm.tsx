@@ -169,7 +169,7 @@ export const AppointmentForm = ({
               fieldType={FormFieldType.SELECT}
               control={form.control}
               name="primaryPhysician"
-              label="Doctor"
+              label="Chair"
               placeholder="Select a chair"
               options={Doctors.map((doctor, i) => ({
                 value: doctor.name,

@@ -9,6 +9,16 @@ import { sendSmsServer } from "@/lib/useSmsSender";
  import { NextResponse, NextRequest } from "next/server";
  
  export async function POST(request: Request) {
+  if (request.method === 'OPTIONS') {
+    return new NextResponse(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    });
+  }
    try {
      const callbackData = await request.json();
      const { Success, Status, transaction_reference, appointmentId } = callbackData;
@@ -70,8 +80,13 @@ import { sendSmsServer } from "@/lib/useSmsSender";
        const redirectUrl = `${baseUrl}/patients/${appointmentToUpdate.appointmentId}/new-appointment/success?appointmentId=${appointmentToUpdate.appointmentId}`;
  
        // Redirect to the success page
-       return NextResponse.redirect(redirectUrl, 303);
-       }
+       return NextResponse.redirect(redirectUrl, {
+        status: 303,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
+    }
      
  
   else {
@@ -95,11 +110,28 @@ import { sendSmsServer } from "@/lib/useSmsSender";
       }
 
          handleSendSms()
-       return NextResponse.json({ status: 'failure', message: 'Payment failed.' });
-     }
+         return NextResponse.json(
+          { status: 'failure', message: 'Payment failed.' },
+          {
+            status: 400,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+            },
+          }
+        );
+      }
    } catch (error) {
      console.error('Error processing payment callback:', error);
      return NextResponse.json({ status: 'error', message: 'Error processing callback.' });
    }
  }
- 
+ export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
+  });
+}

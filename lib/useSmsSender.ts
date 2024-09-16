@@ -17,15 +17,12 @@ interface SmsResponse {
   msgId: string;
   cost: string;
 }
-
+ 
 const API_KEY = process.env.NEXT_PUBLIC_SMS_API_KEY!;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_SMS_ENDPOINT!;
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 3000; // 3 seconds
 
-const MAX_RETRIES = 4;
-const RETRY_DELAY = 2000; // 2 second
-
-console.log(API_KEY)
-console.log(API_ENDPOINT)
 async function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -51,16 +48,20 @@ export async function sendSmsServer({ to, from = 'TIARACONECT', message }: SmsSe
   let attempts = 0;
   let lastError: Error | null = null;
 
-  while (attempts <= MAX_RETRIES) {
+  while (attempts < MAX_RETRIES) {
     try {
       const responseData = await sendSmsRequest({ to, from, message });
-      
+
+      // Log every attempt's result for better debugging
+      console.log(`Attempt ${attempts + 1} response:`, responseData);
+
+      // Return early if the SMS was sent successfully
       if (responseData.status === 'SUCCESS') {
-        console.log('Send SMS Response:', responseData);
+        console.log('SMS sent successfully:', responseData);
         return NextResponse.json(responseData, { status: 200 });
       } else {
-        console.log(`Attempt ${attempts + 1} failed. Status: ${responseData.status}. Retrying...`);
-        lastError = new Error(`SMS sending failed. Status: ${responseData.status}`);
+        console.error(`Attempt ${attempts + 1} failed. Response status: ${responseData.status}`);
+        lastError = new Error(`SMS sending failed. Response status: ${responseData.status}`);
       }
     } catch (error) {
       console.error(`Attempt ${attempts + 1} error:`, error);
@@ -68,11 +69,13 @@ export async function sendSmsServer({ to, from = 'TIARACONECT', message }: SmsSe
     }
 
     attempts++;
-    if (attempts <= MAX_RETRIES) {
+    // Only delay if there's another retry left
+    if (attempts < MAX_RETRIES) {
       await delay(RETRY_DELAY);
     }
   }
 
+  // If we exhausted all attempts, return an error response
   console.error('Max retries reached. SMS sending failed.');
   return NextResponse.json({ error: lastError?.message || 'Max retries reached' }, { status: 500 });
 }

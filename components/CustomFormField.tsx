@@ -287,7 +287,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       const [updatedTimeSlots, setUpdatedTimeSlots] = useState<TimeSlot[]>([]);
         const generateTimeSlots = (): TimeSlot[] => {
           const slots: TimeSlot[] = [];
-          for (let hour = 10; hour <= 18; hour++) {
+          for (let hour = 9; hour <= 19; hour++) {
             for (let minute = 0; minute < 60; minute += 30) {
               const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
               const ampm = hour >= 12 ? 'PM' : 'AM';
@@ -406,7 +406,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
           />
         </div>
         {selectedDate && (
-          <div className="grid gap-2 sm:mt-0 mt-[-26px] ml-[-14px] mr-4">
+          <div className="grid gap-2 sm:mt-0 mt-[-9px] ml-[-14px] mr-4 ">
             <TimeSlotGrid 
               timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
               onSelectTimeSlot={handleTimeSelect} 

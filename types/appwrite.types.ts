@@ -37,10 +37,3 @@ export interface Transaction extends Models.Document {
   appointmentId: string;
 }
 
-
-// birthDate: Date;
-// gender: Gender;
-// address: string;
-// occupation: string;
-// emergencyContactName: string;
-// emergencyContactNumber: string;

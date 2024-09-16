@@ -42,19 +42,19 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
     resolver: zodResolver(UserFormValidation),
     defaultValues: {
       name: "",
-      email: "",
+      //email: "",
       phone: "",
     },
   });
 
-  const onSubmit = async ({name, email,  phone}: z.infer<typeof UserFormValidation>) => {
+  const onSubmit = async ({name,   phone}: z.infer<typeof UserFormValidation>) => {
     setIsLoading(true);
     const appointmentId = appointment.$id    // You need to implement this function
  
     try {
       const client = {
          name, 
-         email, 
+         //email, 
          phone, 
          appointmentId    
       };
@@ -97,7 +97,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
           iconAlt="user"
         />
 
-        <CustomFormField
+        {/* <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
           name="email"
@@ -105,7 +105,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
           placeholder="johndoe@gmail.com"
           iconSrc="/assets/icons/email.svg"
           iconAlt="email"
-        />
+        /> */}
 
         <CustomFormField
           fieldType={FormFieldType.PHONE_INPUT}

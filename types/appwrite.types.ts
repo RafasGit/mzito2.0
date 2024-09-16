@@ -4,7 +4,7 @@ import { Models } from "node-appwrite";
 export interface Patient extends Models.Document {
   //userId: string;
   name: string;
-  email: string;
+  //email: string;
   phone: string;
   primaryPhysician: string;
   // insuranceProvider: string;
@@ -32,7 +32,7 @@ export interface Appointment extends Models.Document {
 
 export interface Transaction extends Models.Document {
   name: string;
-  email: string;
+ // email: string;
   phone: string;
   appointmentId: string;
 }

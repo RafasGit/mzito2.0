@@ -402,11 +402,13 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
               const oneWeekFromNow = new Date(today.setHours(0,0,0,0) + 7 * 24 * 60 * 60 * 1000);
               return date < today || date.getTime() > oneWeekFromNow.getTime();
             }}
-            className="rounded-md "
-          />
+            className="rounded-md " />
+            <p className='block italic text-zinc-700 text-center text-nowrap mt-[-22px]'>Booking hours: 9:00AM-7:30PM</p>
+
+          
         </div>
         {selectedDate && (
-          <div className="grid gap-2 sm:mt-0 mt-[-9px] ml-[-14px] mr-4 ">
+          <div className="grid gap-2 sm:mt-0 mt-[-14px] ml-[-14px] mr-4 ">
             <TimeSlotGrid 
               timeSlots={updatedTimeSlots.length > 0 ? updatedTimeSlots : timeSlots} 
               onSelectTimeSlot={handleTimeSelect} 

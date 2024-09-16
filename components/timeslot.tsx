@@ -24,7 +24,6 @@ interface TimeSlotGridProps {
   
     return (
       <div className="grid grid-cols-3 gap-2">
-        <p className='block italic text-zinc-700 text-center text-nowrap mt-[-22px]'>Booking hours: 9:00AM-7:30PM</p>
         {timeSlots.map((slot, index) => (
           <Button
            type='button'

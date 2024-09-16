@@ -233,7 +233,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
 
     const {documents} = response;
 
-      console.log(response)
+     // console.log(response)
       if (!documents) {
         console.error('Documents array is undefined');
         return;

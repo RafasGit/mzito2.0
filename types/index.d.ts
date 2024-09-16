@@ -24,7 +24,7 @@ declare type SearchParamProps = {
  declare type PaymentParams = {
   name: string;
   phone: string;
-  email: string;
+  //email: string;
   appointmentId: string;
 
  }

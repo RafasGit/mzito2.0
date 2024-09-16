@@ -84,7 +84,7 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-4 ml-3 sm:ml-0 sm:space-y-10 px-4 sm:px-6 max-w-screen-sm max-h-svh sm:max-w-screen-xl mx-auto w-full">
       <section className="mb-6 sm:mb-12 space-y-2 sm:space-y-4">
         <h1 className="header text-xl sm:text-4xl">Hi there 👋</h1>
-        <p className="text-dark-700 text-sm sm:text-xl">Confirm your payment details to complete your booking.</p>
+        <p className="text-dark-700 text-sm sm:text-xl">Confirm payment details to complete your booking.</p>
       </section>
 
         <CustomFormField

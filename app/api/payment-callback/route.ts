@@ -36,7 +36,7 @@ import { sendSmsServer } from "@/lib/useSmsSender";
        // Register the patient (user)
        const client = {
          name: transaction.name,
-         email: transaction.email,
+        // email: transaction.email,
          phone: transaction.phone,
        };
  

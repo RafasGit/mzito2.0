@@ -10,7 +10,7 @@ declare type SearchParamProps = {
   
   declare interface CreateUserParams {
     name: string;
-    email: string;
+   // email?: string;
     phone: string;
   }
   declare interface User extends CreateUserParams {

@@ -14,10 +14,11 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
   //if (patient) redirect(`/patients/${userId}/new-appointment`);
 
   return (
-    <div className=" overflow-hidden overflow-y-hidden flex flex-col md:flex-row h-max max-h-screen">
-      <section className=" overflow-hidden remove-scrollbar container">
-        <div className="   overflow-hidden sub-container max-w-[860px] flex-1 flex-col py-10 w-full">
-        <Image
+        <div className="flex flex-col md:flex-row min-h-screen">
+        <section className="container overflow-y-auto flex-grow">
+        <div className="max-w-[860px] flex flex-col py-10 w-full px-4 md:px-6">
+
+            <Image
           src='/assets/icons/Edu mzito(3).png'
           height={200}
           width={200}

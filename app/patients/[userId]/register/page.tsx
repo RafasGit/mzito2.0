@@ -14,7 +14,7 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
   //if (patient) redirect(`/patients/${userId}/new-appointment`);
 
   return (
-        <div className="flex flex-col md:flex-row min-h-screen ml-3">
+        <div className="flex flex-col md:flex-row min-h-screen ml-4">
         <section className="container overflow-y-auto flex-grow">
         <div className="max-w-[860px] flex flex-col py-10 w-full px-1 md:px-6">
 

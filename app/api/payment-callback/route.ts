@@ -64,7 +64,7 @@ export async function POST(request: Request) {
       if (updatedAppointment) {
         await sendSmsServer({
           to: client.phone,
-          message: `${client.name}, your booking for ${formatDateTime(new Date(updatedAppointment.schedule.getTime() + 3 * 60 * 60 * 1000))} successfully confirmed!`,
+          message: `${client.name}, your booking for ${formatDateTime(updatedAppointment?.schedule).dateTime} successfully confirmed!`
         });
       }
 

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 interface SmsSenderProps {
   to: string;
   from?: string;
-  message: string;
+  message: string | Date ;
 }
 
 interface SmsResponse {

@@ -63,9 +63,12 @@ export const PatientForm = ({appointment} : {appointment: Appointment} ) => {
       if (newTransaction) {
         console.log(`Payment initiated, transaction_reference: ${newTransaction}`);
         toast.success('Appointment successfully created!');
+        
+        setTimeout(() => {
         router.push(
           `/patients/${appointmentId}/new-appointment/success?appointmentId=${appointment.$id}`
         )   
+      } ,12000) 
       }
       
   

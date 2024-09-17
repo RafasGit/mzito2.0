@@ -57,6 +57,7 @@ export const AppointmentForm = ({
     },
   });
   
+  
 
   const onSubmit = async (
     values: z.infer<typeof AppointmentFormValidation>
@@ -87,14 +88,18 @@ export const AppointmentForm = ({
           status: status as Status,
           note: values.note,
         };
+        console.log(appointment.schedule)
 
         const newAppointment = await createAppointment(appointment);
 
         if (newAppointment) {
           //form.reset();
+         // console.log(newAppointment)
            
-            router.push(`/patients/${newAppointment.$id}/register`);
-              // `/patients/${newAppointment.$id}/register/success?appointmentId=${newAppointment.$id}`
+           
+                router.push(`/patients/${newAppointment.$id}/register`);
+                // `/patients/${newAppointment.$id}/register/success?appointmentId=${newAppointment.$id}`
+            
               toast.success('Appointment details confirmed!')
 
         }

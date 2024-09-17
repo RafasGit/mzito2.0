@@ -320,7 +320,9 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
       
       const handleTimeSelect = (time: string) => {
         setSelectedTime(time);
-      //  console.log(`time ${selectedTime}`)
+        console.log(`time ${selectedTime}`)
+        console.log(`settime ${time}`)
+
       
         if (selectedDate && time) {
         
@@ -388,6 +390,7 @@ const RenderInput = ({ field, props,  }: { field: any; props: CustomProps }) => 
     </SheetTrigger>
     <SheetContent className="sm:max-w-[425px]">
       <SheetHeader>
+        <SheetTitle className="hidden">title</SheetTitle>
          <SheetDescription className="mt-6 mb-6 text-xl sm:mt-10 sm:mb-6 sm:text-2xl">Select Date and Time to book a service</SheetDescription> 
       </SheetHeader>
       <FormControl>     

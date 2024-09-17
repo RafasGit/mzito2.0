@@ -13,6 +13,14 @@ const RequestSuccess = async ({
   }: SearchParamProps) => {
     const appointmentId = (searchParams?.appointmentId as string) || "";
     const appointment = await getAppointment(appointmentId);
+    const addHours = (date: Date, hours: number) => {
+      const newDate = new Date(date);
+      newDate.setHours(newDate.getHours() + hours);
+      return newDate;
+    };
+    
+    const updatedDate = addHours(appointment.schedule, 3);
+    const formattedDate = formatDateTime(updatedDate).dateTime;      
   
     const doctor = Doctors.find(
       (doctor) => doctor.name === appointment?.primaryPhysician
@@ -64,7 +72,7 @@ const RequestSuccess = async ({
                 width={24}
                 alt="calendar"
               />
-              <p> {formatDateTime(appointment?.schedule).dateTime}</p>
+              <p> {formattedDate}</p>
             </div>
           </section>
   

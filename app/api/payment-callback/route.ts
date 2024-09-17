@@ -62,16 +62,7 @@ export async function POST(request: Request) {
       console.log(updatedAppointment);
 
       if (updatedAppointment) {
-        //const appt =  await getAppointment(updatedAppointment.$id)
-        const options: Intl.DateTimeFormatOptions = {
-          timeZone: 'Africa/Nairobi',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        };
-        //console.log(updatedAppointment.schedule)
+              
         const addHours = (date: Date, hours: number) => {
           const newDate = new Date(date);
           newDate.setHours(newDate.getHours() + hours);
@@ -80,8 +71,7 @@ export async function POST(request: Request) {
         
         const updatedDate = addHours(updatedAppointment.schedule, 3);
         const formattedDate = formatDateTime(updatedDate).dateTime;      
-       // console.log(`new ${formattedDate}`)
-      // const formattedDate = (updatedAppointment?.schedule ?? new Date()).toLocaleString('en-US', options);
+      
         await sendSmsServer({
           to: client.phone,
           message: `${client.name}, you booking for ${formattedDate} successfully confirmed!`

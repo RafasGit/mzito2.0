@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { Form } from "../ui/form";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 
 export const AppointmentForm = ({
@@ -49,8 +49,8 @@ export const AppointmentForm = ({
     defaultValues: {
       primaryPhysician: appointment ? appointment?.primaryPhysician : "",
       schedule: appointment
-        ? new Date(appointment?.schedule!)
-        : new Date(Date.now()),
+      ? new Date(new Date(appointment?.schedule!).getTime() - new Date().getTimezoneOffset() * 60000)
+      : new Date(),
       reason: appointment ? appointment.reason : "",
       note: appointment?.note || "",
       cancellationReason: appointment?.cancellationReason || "",

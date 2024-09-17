@@ -2,7 +2,7 @@ import {
   DATABASE_ID, TRANSACTION_COLLECTION_ID, databases 
 } from "@/lib/appwrite.config";
 import { registerPatient } from "@/lib/actions/patient.actions";
-import { updateAppointmentWithIds } from "@/lib/actions/appointment.actions";
+import { updateAppointmentWithIds, getAppointment } from "@/lib/actions/appointment.actions";
 import { sendSmsServer } from "@/lib/useSmsSender";
 import { Appointment, Transaction } from "@/types/appwrite.types";
 import { formatDateTime } from "@/lib/utils";
@@ -62,6 +62,7 @@ export async function POST(request: Request) {
       console.log(updatedAppointment);
 
       if (updatedAppointment) {
+        const appt =  await getAppointment(updatedAppointment.$id)
         const options: Intl.DateTimeFormatOptions = {
           timeZone: 'Africa/Nairobi',
           year: 'numeric',
@@ -73,10 +74,10 @@ export async function POST(request: Request) {
         //console.log(updatedAppointment.schedule)
       //  const formattedDate=formatDateTime(updatedAppointment.schedule).dateTime
        // console.log(`new ${formattedDate}`)
-       const formattedDate = (updatedAppointment?.schedule ?? new Date()).toLocaleString('en-US', options);
+      // const formattedDate = (updatedAppointment?.schedule ?? new Date()).toLocaleString('en-US', options);
         await sendSmsServer({
           to: client.phone,
-          message: `${client.name}, your booking for ${formattedDate} successfully confirmed!`
+          message: `${client.name}, your booking for ${appt.schedule} successfully confirmed!`
         });
       }
 

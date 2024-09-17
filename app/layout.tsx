@@ -30,7 +30,7 @@ export default function RootLayout({
       <body
      style={{ backgroundImage: `url('/assets/images/footer-bg.png')` }}
         className={cn(
-          "min-h-screen bg-[#141414] font-sans antialiased ",
+          "min-h-svh bg-[#141414] font-sans antialiased ",
           fontSans.variable
         )}
       >

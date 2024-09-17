@@ -67,7 +67,7 @@ export async function POST(request: Request) {
         console.log(`new ${formattedDate}`)
         await sendSmsServer({
           to: client.phone,
-          message: `${client.name}, your booking for ${formattedDate} successfully confirmed!`
+          message: `${client.name}, your booking for ${(updatedAppointment)} successfully confirmed!`
         });
       }
 

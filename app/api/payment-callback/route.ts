@@ -77,7 +77,7 @@ export async function POST(request: Request) {
       // const formattedDate = (updatedAppointment?.schedule ?? new Date()).toLocaleString('en-US', options);
         await sendSmsServer({
           to: client.phone,
-          message: `${client.name}, your booking for ${appt.schedule} successfully confirmed!`
+          message: `${client.name}, your booking for ${formatDateTime(appt.schedule).dateTime} successfully confirmed!`
         });
       }
 

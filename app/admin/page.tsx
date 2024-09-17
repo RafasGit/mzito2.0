@@ -4,13 +4,22 @@ import Link from "next/link";
 import { StatCard } from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
+import { Appointment } from "@/types/appwrite.types";
 
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
 
 const AdminPage = async () => {
-  const appointments = await getRecentAppointmentList();
+   const appointmentsResponse = await getRecentAppointmentList();
+
+   const appointments: Appointment[] = appointmentsResponse.documents;
+   const sortedAppointments = appointments.sort((a: Appointment, b: Appointment) => {
+    const dateA = new Date(a.schedule);
+    const dateB = new Date(b.schedule);
+    return dateA.getTime() - dateB.getTime();
+  });
   
+  console.log(sortedAppointments);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
@@ -39,25 +48,25 @@ const AdminPage = async () => {
         <section className="admin-stat">
           <StatCard
             type="appointments"
-            count={appointments?.scheduledCount}
+            count={appointmentsResponse?.scheduledCount}
             label="Scheduled appointments"
             icon={"/assets/icons/appointments.svg"}
           />
           <StatCard
             type="pending"
-            count={appointments?.pendingCount}
+            count={appointmentsResponse?.pendingCount}
             label="Pending appointments"
             icon={"/assets/icons/pending.svg"}
           />
           <StatCard
             type="cancelled"
-            count={appointments?.cancelledCount}
+            count={appointmentsResponse?.cancelledCount}
             label="Cancelled appointments"
             icon={"/assets/icons/cancelled.svg"}
           />
         </section>
 
-        <DataTable columns={columns} data={appointments.documents} />
+        <DataTable columns={columns} data={sortedAppointments} />
       </main>
     </div>
   );

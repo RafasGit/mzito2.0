@@ -16,7 +16,7 @@ const Register = async ({ searchParams, params: { userId } }: SearchParamProps) 
   return (
         <div className="flex flex-col md:flex-row min-h-screen ml-4">
         <section className="container overflow-y-auto flex-grow">
-        <div className="max-w-[860px] flex flex-col py-10 w-full px-4 md:px-6">
+        <div className="max-w-[860px] flex flex-col py-10 w-full px-1 md:px-6">
 
             <Image
           src='/assets/icons/Edu mzito(3).png'

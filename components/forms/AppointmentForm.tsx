@@ -80,8 +80,6 @@ export const AppointmentForm = ({
     try {
       if (type === "create" ) {
         const appointment = {
-        //  userId,
-         // patient: patientId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason!,
@@ -93,14 +91,10 @@ export const AppointmentForm = ({
         const newAppointment = await createAppointment(appointment);
 
         if (newAppointment) {
-          //form.reset();
-         // console.log(newAppointment)
-           
-           
-                router.push(`/patients/${newAppointment.$id}/register`);
-                // `/patients/${newAppointment.$id}/register/success?appointmentId=${newAppointment.$id}`
-            
-              toast.success('Appointment details confirmed!')
+
+         router.push(`/patients/${newAppointment.$id}/register`);
+        
+         toast.success('Appointment details confirmed!')
 
         }
       } else {
@@ -145,7 +139,6 @@ export const AppointmentForm = ({
   const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
   const handleDoctorChange = (value: string) => {
     setSelectedDoctor(value);
-    //console.log(selectedDoctor)
     
   };
    return (

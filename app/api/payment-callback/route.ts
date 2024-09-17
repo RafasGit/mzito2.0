@@ -63,10 +63,10 @@ export async function POST(request: Request) {
 
       if (updatedAppointment) {
         console.log(updatedAppointment.schedule)
-        const formattedDate=
+        const formattedDate=formatDateTime(updatedAppointment?.schedule).dateTime
         await sendSmsServer({
           to: client.phone,
-          message: `${client.name}, your booking for ${formatDateTime(updatedAppointment?.schedule).dateTime} successfully confirmed!`
+          message: `${client.name}, your booking for ${formattedDate} successfully confirmed!`
         });
       }
 

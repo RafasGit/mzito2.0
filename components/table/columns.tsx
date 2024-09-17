@@ -20,7 +20,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "patient",
-    header: "Patient",
+    header: "Client",
     cell: ({ row }) => {
       const appointment = row.original;
       return <p className="text-14-medium ">{appointment?.patient?.name}</p>;
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Appointment>[] = [
   },
   {
     accessorKey: "primaryPhysician",
-    header: "Doctor",
+    header: "Chair",
     cell: ({ row }) => {
       const appointment = row.original;
 

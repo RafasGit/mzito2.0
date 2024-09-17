@@ -95,7 +95,7 @@ export const AppointmentForm = ({
            
             router.push(`/patients/${newAppointment.$id}/register`);
               // `/patients/${newAppointment.$id}/register/success?appointmentId=${newAppointment.$id}`
-              toast.success('Appointment details confirmed! Fill in your details to confirm booking')
+              toast.success('Appointment details confirmed!')
 
         }
       } else {

@@ -24,6 +24,8 @@ export async function POST(request: Request) {
     const callbackData = await request.json();
     const { Success, Status, transaction_reference, appointmentId } = callbackData;
 
+    console.log('📥 Payment callback received:', { Success, Status, transaction_reference, appointmentId });
+
     // Fetch the transaction document
     const transaction: Transaction = await databases.getDocument(
       DATABASE_ID!,
@@ -31,11 +33,15 @@ export async function POST(request: Request) {
       transaction_reference
     );
 
+    console.log('📄 Transaction found:', { name: transaction.name, phone: transaction.phone });
+
     if (!transaction) {
       throw new Error('Transaction not found');
     }
 
     if (Success && Status === 200) {
+      console.log('✅ Payment successful - processing...');
+      
       // Update the transaction status to "completed"
       await databases.updateDocument(
         DATABASE_ID!,
@@ -44,6 +50,8 @@ export async function POST(request: Request) {
         { status: 'completed' }
       );
 
+      console.log('✅ Transaction status updated to completed');
+
       // Register the patient (user)
       const client = {
         name: transaction.name,
@@ -51,6 +59,7 @@ export async function POST(request: Request) {
       };
 
       const newPatient = await registerPatient(client);
+      console.log('✅ Patient registered:', newPatient.$id);
 
       // Update the appointment with the new patient ID
       const appointmentToUpdate = {
@@ -59,7 +68,7 @@ export async function POST(request: Request) {
       };
     
       const updatedAppointment: Appointment = await updateAppointmentWithIds(appointmentToUpdate);
-      console.log(updatedAppointment);
+      console.log('✅ Appointment updated:', updatedAppointment.$id);
 
       if (updatedAppointment) {
               
@@ -72,10 +81,15 @@ export async function POST(request: Request) {
         const updatedDate = addHours(updatedAppointment.schedule, 3);
         const formattedDate = formatDateTime(updatedDate).dateTime;      
       
+        console.log('📱 Sending SMS to:', client.phone);
+        console.log('📱 SMS message:', `${client.name}, you booking for ${formattedDate} successfully confirmed!`);
+        
         await sendSmsServer({
           to: client.phone,
           message: `${client.name}, you booking for ${formattedDate} successfully confirmed!`
         });
+        
+        console.log('✅ SMS sent successfully!');
       }
 
       // Build the redirect URL

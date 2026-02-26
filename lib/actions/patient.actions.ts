@@ -120,20 +120,10 @@ export const registerPatient = async ({
     const api_key = process.env.NEXT_PUBLIC_API_KEY!;
     const transaction_reference = `txn_${new Date().getTime()}_${Math.random().toString(36).substring(7)}`; // Unique reference
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL!
-    // // Store the transaction reference and patient data
-    // await databases.createDocument(DATABASE_ID!, TRANSACTION_COLLECTION_ID!, transaction_reference, {
-    //   //patient, // Store patient data directlyn
-    //   name,
-    //   email,
-    //   phone,
-    //   status: 'pending', // Payment status starts as pending
+    const useMockPayment = process.env.USE_MOCK_PAYMENT === 'true';
 
-    // });
-
-    ///console.log(`user ${process.env.NEXT_PUBLIC_APP_URL}`)
-    console.log(`user name ${api_key}`)
-  //  console.log(`user name ${phone}`)
-  //  console.log(`user name ${appointmentId}`)
+    console.log(`Mock payment mode: ${useMockPayment}`);
+    console.log(`Transaction reference: ${transaction_reference}`);
   
     const requestBody = {
       customer_details: {
@@ -164,6 +154,54 @@ export const registerPatient = async ({
     };
     
 
+    // Mock payment mode for testing
+    if (useMockPayment) {
+      console.log('🎭 MOCK PAYMENT MODE - Simulating successful payment');
+      
+      // Create transaction record
+      const newTransaction = await databases.createDocument(
+        DATABASE_ID!,
+        TRANSACTION_COLLECTION_ID!,
+        transaction_reference,
+        {
+          transaction_reference: transaction_reference,
+          name: name,
+          phone: phone,
+          appointmentId,
+          status: 'pending',
+        },
+      );
+
+      console.log('✅ Mock transaction created:', transaction_reference);
+
+      // Simulate payment callback after a short delay
+      setTimeout(async () => {
+        try {
+          console.log('🔄 Simulating payment callback...');
+          await fetch(`${baseUrl}/api/payment-callback`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              Success: true,
+              Status: 200,
+              transaction_reference: transaction_reference,
+              appointmentId: appointmentId,
+            }),
+          });
+          console.log('✅ Mock payment callback completed');
+        } catch (error) {
+          console.error('❌ Mock callback failed:', error);
+        }
+      }, 2000); // 2 second delay
+
+      return {
+        message: 'Mock payment initiated successfully. Processing...',
+        transaction_reference,
+        mock: true,
+      };
+    }
+
+    // Real payment flow
     const authHeader = {
       'Api-Key': api_key
     };
@@ -177,28 +215,44 @@ export const registerPatient = async ({
   
     try {
       const response = await axios(config);
-   //   console.log('Payment initiated:', response.data);
+      console.log('Payment initiated:', response.data);
       const newTransaction = await databases.createDocument(
         DATABASE_ID!,
         TRANSACTION_COLLECTION_ID!,
-        transaction_reference,  // Use the transaction_reference as the document ID
+        transaction_reference,
         {
           transaction_reference: transaction_reference,
-          
-            name: name,
-           // email: email,
-            phone: phone,
-            appointmentId,
-            status: 'pending', // Set the initial status to pending
-
-          },
-        );
-      console.log(`transactin ${newTransaction}`)
+          name: name,
+          phone: phone,
+          appointmentId,
+          status: 'pending',
+        },
+      );
+      console.log(`Transaction created: ${newTransaction.$id}`);
       return {
         message: 'Payment initiated successfully. Await callback for final result.',
-       
+        transaction_reference,
       };
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const statusCode = error.response?.status;
+        const errorMessage = error.response?.data?.message || error.message;
+        
+        console.error('Payment initiation failed:', {
+          status: statusCode,
+          message: errorMessage,
+          url: config.url,
+          data: error.response?.data
+        });
+
+        if (statusCode === 503) {
+          throw new Error('Payment service is temporarily unavailable. Please try again later.');
+        } else if (statusCode === 401 || statusCode === 403) {
+          throw new Error('Payment authentication failed. Please contact support.');
+        } else {
+          throw new Error(`Payment failed: ${errorMessage || 'Unknown error occurred'}`);
+        }
+      }
       throw new Error(`Error initiating payment: ${error}`);
     }
   };
